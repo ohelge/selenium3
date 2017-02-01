@@ -6,7 +6,7 @@ repositories {
     mavenCentral();
 }
 dependencies {
-    testCompile 'org.testng:testng:6.9.13.6' // il compile
+    testCompile 'org.testng:testng:6.9.13.6' // ili compile
     //compile 'org.seleniumhq.selenium:selenium-java:2.53.1'
     testCompile 'org.seleniumhq.selenium:selenium-java:3.0.1'
 
