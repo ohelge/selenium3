@@ -56,7 +56,7 @@ public class TestBase {
     }
     wd = new ChromeDriver(); //FirefoxDriver(); //ChromeDriver() //InternetExplorerDriver()
     tlDriver.set(wd);
-    wd.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
+    wd.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS); //l4_m9 Ожидание появления элемента. 5 sekund na ozhidanie elementa. Esli ne naidet, yo isklu4enie NoSuchElementException. Mehanizm neqvnih ozhidanii
     wait = new WebDriverWait(wd, 10); //sel3_l2_m2
 
     Runtime.getRuntime().addShutdownHook(new Thread(() -> {wd.quit(); wd = null;} ));//l3_m12 Esli ne perezapuskat' tot zhe brauzer posle kazhdogo @Test */
