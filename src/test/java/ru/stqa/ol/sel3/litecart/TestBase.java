@@ -31,8 +31,8 @@ public class TestBase {
     options.addArguments("start-maximized");// http://peter.sh/experiments/chromium-command-line-switches/#start-fullscreen
     wd = new ChromeDriver(options);*/
 
-    // if (wd != null) {      return;    }
-    if (tlDriver.get() !=null ) {
+   // if (wd != null) {      return;    }
+   if (tlDriver.get() !=null ) {
       wd = tlDriver.get();
       wait = new WebDriverWait(wd, 10);
       return;
@@ -42,7 +42,7 @@ public class TestBase {
     wd.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
     wait = new WebDriverWait(wd, 10); //sel3_l2_m2
 
-    Runtime.getRuntime().addShutdownHook(new Thread(() -> {wd.quit(); wd = null;} ));//l3_m12 Esli ne perezapuskat' tot zhe brauzer posle kazhdogo @Test
+    Runtime.getRuntime().addShutdownHook(new Thread(() -> {wd.quit(); wd = null;} ));//l3_m12 Esli ne perezapuskat' tot zhe brauzer posle kazhdogo @Test */
   }
 
   @AfterMethod(alwaysRun = true)

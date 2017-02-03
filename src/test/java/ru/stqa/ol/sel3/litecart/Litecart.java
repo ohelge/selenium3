@@ -26,7 +26,7 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.titleIs;
 public class Litecart extends TestBase {
 
   @Test
-  public void BuilderAdminLogin() {
+  public void builderAdminLogin() {
     wd.get("http://localhost/litecart/admin/");
 
     wd.findElement(By.name("username")).sendKeys("admin");
