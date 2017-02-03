@@ -1,8 +1,10 @@
 package ru.stqa.ol.sel3.litecart;
 
+import org.openqa.selenium.By;
+import org.openqa.selenium.InvalidSelectorException;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ThreadGuard;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -16,8 +18,23 @@ public class TestBase {
   //public static WebDriver wd; //s3_l3_m12 delaem static wd i wait dlq proverki esli uzhe brauzer zapuwen.
   public WebDriver wd;
   public WebDriverWait wait;
-  public static ThreadLocal<WebDriver> tlDriver = new ThreadLocal<>();
+  public final static ThreadLocal<WebDriver> tlDriver = new ThreadLocal<>();
   //l3_m12 Delaem Thread dlq zapuska neskol'kih brauzerov odnovremenne. Togda ubiraem static pered wd, t.k. ona budet inicializirovat'sq pered kazhdim testovim metodom @Test
+
+  public boolean isElementPresent (By locator) { //l4_m8 delaem 2 metoda
+    try {
+      wd.findElement(locator);
+      return true;
+    } catch (InvalidSelectorException ex) { //l4_m8  4tobi test padal na "div[" nado dobavit' catch InvalidSelectorException
+      throw ex;
+    }
+      catch (NoSuchElementException ex) {
+      return false;
+    }
+  }
+  public boolean areElementsPresent (By locator){ //l4_m8 delaem 2 metoda
+    return wd.findElements(locator).size() > 0;
+  }
 
   @BeforeMethod
   public void setUp() throws Exception {
