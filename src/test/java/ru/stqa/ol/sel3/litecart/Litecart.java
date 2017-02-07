@@ -9,24 +9,29 @@ import java.util.List;
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.javaScriptThrowsNoExceptions;
 import static org.openqa.selenium.support.ui.ExpectedConditions.titleIs;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 /**
  * Created by A546902 on 2017-01-31.
  */
 public class Litecart extends TestBase {
 
-  @Test (enabled = true)
+  @Test(enabled = true)
   public void zadanie8() { //Задание 8. Сделайте сценарий, проверяющий наличие стикеров у товаров http://software-testing.ru/lms/mod/assign/view.php?id=38589
     wd.get("http://localhost/litecart");
-    List<WebElement> ducks = wd.findElements(By.xpath("//ul[@class='listing-wrapper products']/li[@class='product column shadow hover-light']"));
+    /*List<WebElement> ducks = wd.findElements(By.xpath("//ul[@class='listing-wrapper products']/li[@class='product column shadow hover-light']"));
+    проверки типа li[@class='product column shadow hover-light'] в xpath весьма опасны, потому что если вдруг этому элементу будет добавлен новый класс
+    (верстальщики могут запросто это сделать) или даже просто изменится порядок классов -- локатор перестанет работать. */
+    List<WebElement> ducks = wd.findElements(By.xpath("//div[@class='image-wrapper']"));
     for (WebElement duck : ducks) {
-      duck.findElement(By.cssSelector("div[class^='sticker']"));
-      System.out.println(duck.getText() + "\n");
+      List<WebElement> duck1 = duck.findElements(By.cssSelector("[class^='sticker']"));
+      System.out.println(duck.getTagName() + duck.getText() + "\n");
+      assertEquals(duck1.size(), 1);
     }
-
   }
 
-  @Test(enabled = false) //Задание 7.
+  @Test(enabled = true) //Задание 7.
   public void zadanie7() {
     wd.get("http://localhost/litecart/admin/");
     wd.findElement(By.name("username")).sendKeys("admin");
@@ -38,57 +43,13 @@ public class Litecart extends TestBase {
     // List<WebElement> table = wd.findElements(By.xpath("//ul[@id='box-apps-menu']"));
     List<WebElement> rows = wd.findElements(By.xpath("//ul[@id='box-apps-menu']/li[@id='app-']"));
     for (WebElement row : rows) {
-      row.findElement(By.xpath("/a[1]")).click();
+      row.findElement(By.cssSelector("a[href^='http']")).click();
     }
     /*wd.findElement(By.xpath("//a[@href='http://localhost/litecart/admin/?app=appearance&doc=template']")).click();
     wd.findElement(By.xpath("//h1[contains(text(),'Template')]"));
     wd.findElement(By.xpath("//a[@href='http://localhost/litecart/admin/?app=appearance&doc=logotype']")).click();
-    wd.findElement(By.xpath("//h1[contains(text(),'Logotype')]"));
+    wd.findElement(By.xpath("//h1[contains(text(),'Logotype')]")); */
 
-    wd.findElement(By.xpath("//a[@href='http://localhost/litecart/admin/?app=catalog&doc=catalog']")).click();
-    wd.findElement(By.xpath("//h1[contains(text(),'Catalog')]"));
-
-    wd.findElement(By.xpath("//a[@href='http://localhost/litecart/admin/?app=countries&doc=countries']")).click();
-    wd.findElement(By.xpath("//h1[contains(text(),'Countries')]"));
-
-    wd.findElement(By.xpath("//a[@href='http://localhost/litecart/admin/?app=currencies&doc=currencies']")).click();
-    wd.findElement(By.xpath("//h1[contains(text(),'Currencies')]"));
-
-    wd.findElement(By.xpath("//a[@href='http://localhost/litecart/admin/?app=customers&doc=customers']")).click();
-    wd.findElement(By.xpath("//h1[contains(text(),'Customers')]"));
-
-    wd.findElement(By.xpath("//a[@href='http://localhost/litecart/admin/?app=geo_zones&doc=geo_zones']")).click();
-    wd.findElement(By.xpath("//h1[contains(text(),'Geo Zones')]"));
-
-    wd.findElement(By.xpath("//a[@href='http://localhost/litecart/admin/?app=languages&doc=languages']")).click();
-    wd.findElement(By.xpath("//h1[contains(text(),'Languages')]"));
-
-    wd.findElement(By.xpath("//a[@href='http://localhost/litecart/admin/?app=modules&doc=jobs']")).click();
-    wd.findElement(By.xpath("//h1[contains(text(),'Job Modules')]"));
-
-    wd.findElement(By.xpath("//a[@href='http://localhost/litecart/admin/?app=orders&doc=orders']")).click();
-    wd.findElement(By.xpath("//h1[contains(text(),'Orders')]"));
-
-    wd.findElement(By.xpath("//a[@href='http://localhost/litecart/admin/?app=reports&doc=monthly_sales']")).click();
-    wd.findElement(By.xpath("//h1[contains(text(),'Monthly Sales')]"));
-
-    wd.findElement(By.xpath("//a[@href='http://localhost/litecart/admin/?app=settings&doc=store_info']")).click();
-    wd.findElement(By.xpath("//h1[contains(text(),'Settings')]"));
-
-    wd.findElement(By.xpath("//a[@href='http://localhost/litecart/admin/?app=slides&doc=slides']")).click();
-    wd.findElement(By.xpath("//h1[contains(text(),'Slides')]"));
-
-    wd.findElement(By.xpath("//a[@href='http://localhost/litecart/admin/?app=tax&doc=tax_classes']")).click();
-    wd.findElement(By.xpath("//h1[contains(text(),'Tax Classes')]"));
-
-    wd.findElement(By.xpath("//a[@href='http://localhost/litecart/admin/?app=translations&doc=search']")).click();
-    wd.findElement(By.xpath("//h1[contains(text(),'Search Translations')]"));
-
-    wd.findElement(By.xpath("//a[@href='http://localhost/litecart/admin/?app=users&doc=users']")).click();
-    wd.findElement(By.xpath("//h1[contains(text(),'Users')]"));
-
-    wd.findElement(By.xpath("//a[@href='http://localhost/litecart/admin/?app=vqmods&doc=vqmods']")).click();
-    wd.findElement(By.xpath("//h1[contains(text(),'vQmods')]"));*/
 
     wd.manage().deleteAllCookies();
   }
