@@ -16,7 +16,18 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.titleIs;
 public class Litecart extends TestBase {
 
   @Test (enabled = true)
-  public void builderAdminLogin() {
+  public void zadanie8() { //Задание 8. Сделайте сценарий, проверяющий наличие стикеров у товаров http://software-testing.ru/lms/mod/assign/view.php?id=38589
+    wd.get("http://localhost/litecart");
+    List<WebElement> ducks = wd.findElements(By.xpath("//ul[@class='listing-wrapper products']/li[@class='product column shadow hover-light']"));
+    for (WebElement duck : ducks) {
+      duck.findElement(By.cssSelector("div[class^='sticker']"));
+      System.out.println(duck.getText() + "\n");
+    }
+
+  }
+
+  @Test(enabled = false) //Задание 7.
+  public void zadanie7() {
     wd.get("http://localhost/litecart/admin/");
     wd.findElement(By.name("username")).sendKeys("admin");
     wd.findElement(By.name("password")).sendKeys("admin");
@@ -26,10 +37,9 @@ public class Litecart extends TestBase {
     //Задание 7. Сделайте сценарий, проходящий по всем разделам админки http://software-testing.ru/lms/mod/assign/view.php?id=38588
     // List<WebElement> table = wd.findElements(By.xpath("//ul[@id='box-apps-menu']"));
     List<WebElement> rows = wd.findElements(By.xpath("//ul[@id='box-apps-menu']/li[@id='app-']"));
-for (WebElement row : rows)
-{
-  row.findElement(By.xpath("/a")).click();
-}
+    for (WebElement row : rows) {
+      row.findElement(By.xpath("/a[1]")).click();
+    }
     /*wd.findElement(By.xpath("//a[@href='http://localhost/litecart/admin/?app=appearance&doc=template']")).click();
     wd.findElement(By.xpath("//h1[contains(text(),'Template')]"));
     wd.findElement(By.xpath("//a[@href='http://localhost/litecart/admin/?app=appearance&doc=logotype']")).click();
@@ -83,7 +93,7 @@ for (WebElement row : rows)
     wd.manage().deleteAllCookies();
   }
 
-  @Test (enabled = false)
+  @Test(enabled = false)
   public void google() {
     wd.get("http://google.com"); //ili wd.navigate().to("http://google.com");
     wd.findElement(By.id("gs_ok0")).click(); //otkrivaem klaviaturu
@@ -102,7 +112,7 @@ for (WebElement row : rows)
     Assert.assertTrue(isElementPresent(By.cssSelector(".rc"))); //l5_m9 Nawelsq element klassa rc. Na stranice mnogo takih blokov, no mi iwem odin
   }
 
-  @Test (enabled = false)
+  @Test(enabled = false)
   public void builderAdminLogin2() {
     wd.get("http://localhost/litecart/admin/login.php?redirect_url=%2Flitecart%2Fadmin%2F");
     wd.findElement(By.name("password")).sendKeys("admin");
