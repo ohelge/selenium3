@@ -40,10 +40,17 @@ public class Litecart extends TestBase {
     wd.findElement(By.name("login")).click();
     wait.until(titleIs("My Store"));
     //Задание 7. Сделайте сценарий, проходящий по всем разделам админки http://software-testing.ru/lms/mod/assign/view.php?id=38588
-    // List<WebElement> table = wd.findElements(By.xpath("//ul[@id='box-apps-menu']"));
-    List<WebElement> rows = wd.findElements(By.xpath("//ul[@id='box-apps-menu']/li[@id='app-']"));
+    //List<WebElement> rows = wd.findElements(By.xpath("//li[@id='app-']"));
+    List<WebElement> rows = wd.findElements(By.cssSelector("li#app-"));
     for (WebElement row : rows) {
-      row.findElement(By.cssSelector("a[href^='http']")).click();
+      row.findElement(By.cssSelector("a")).click();
+      try {Thread.sleep(1000);    } catch (Exception e) {     throw new RuntimeException(e);    }
+      List <WebElement> rowsSelected = wd.findElements(By.cssSelector("li#app-[class='selected'] ul li"));
+
+      for (WebElement rowSelected : rowsSelected) {
+        rowSelected.findElement(By.cssSelector("a")).click(); // Zdes' ne nazhimaet vtoroi element Logotype, po4emu?
+        try {Thread.sleep(1000);    } catch (Exception e) {     throw new RuntimeException(e);    }
+      }
     }
     /*wd.findElement(By.xpath("//a[@href='http://localhost/litecart/admin/?app=appearance&doc=template']")).click();
     wd.findElement(By.xpath("//h1[contains(text(),'Template')]"));
