@@ -25,9 +25,9 @@ public class Litecart extends TestBase {
     (верстальщики могут запросто это сделать) или даже просто изменится порядок классов -- локатор перестанет работать. */
     List<WebElement> ducks = wd.findElements(By.xpath("//div[@class='image-wrapper']"));
     for (WebElement duck : ducks) {
-      List<WebElement> duck1 = duck.findElements(By.cssSelector("[class*='sticker']")); //class="sticker new" означает, что у элемента два класса, а не один составной.
+      List<WebElement> duck1 = duck.findElements(By.cssSelector("div.sticker")); //class="sticker new" означает, что у элемента два класса, а не один составной.
       // Ну и как я уже писал -- порядок классов может меняться по прихоти верстальщика или генератора кода страниц, поэтому локатор [class^='...'] весьма рискованный
-      System.out.println(duck.getTagName() + duck.getText() + "\n");
+      System.out.println(duck.getTagName() + duck.getText() + "\n"); //esli iwem vse "sale" to: $$("div .sale") ili "div.sticker.sale"
       assertEquals(duck1.size(), 1);
     }
   }
