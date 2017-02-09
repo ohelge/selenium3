@@ -41,24 +41,24 @@ public class Litecart extends TestBase {
     wd.findElement(By.name("login")).click();
     wait.until(titleIs("My Store"));
     //Задание 7. Сделайте сценарий, проходящий по всем разделам админки http://software-testing.ru/lms/mod/assign/view.php?id=38588
-    //List<WebElement> rows = wd.findElements(By.xpath("//li[@id='app-']"));
     List<WebElement> rows = wd.findElements(By.cssSelector("li#app-"));
-    for (WebElement row : rows) {
-      row.findElement(By.cssSelector("a")).click();
-      try {Thread.sleep(1000);    } catch (Exception e) {     throw new RuntimeException(e);    }
-      List <WebElement> rowsSelected = wd.findElements(By.cssSelector("li#app-[class='selected'] ul li"));
-
-      for (WebElement rowSelected : rowsSelected) {
-        rowSelected.findElement(By.cssSelector("a")).click(); // Zdes' ne nazhimaet vtoroi element Logotype, po4emu?
-        try {Thread.sleep(1000);    } catch (Exception e) {     throw new RuntimeException(e);    }
+    int i = 0;
+    while ( rows.size() != i ) {
+      rows.get(i).findElement(By.cssSelector("a")).click();
+      assertTrue(isElementPresent(By.cssSelector("h1")));
+      i++;
+      if (isElementPresent(By.cssSelector("li#app-[class='selected'] ul"))) {
+        List<WebElement> rowsSelected = wd.findElements(By.cssSelector("li#app-[class='selected'] ul li"));
+        int j = 0;
+        while (rowsSelected.size() != j) {
+          rowsSelected.get(j).findElement(By.cssSelector("a")).click();
+          assertTrue(isElementPresent(By.cssSelector("h1")));
+          rowsSelected = wd.findElements(By.cssSelector("li#app-[class='selected'] ul li"));
+          j++;
+        }
       }
+      rows = wd.findElements(By.cssSelector("li#app-"));
     }
-    /*wd.findElement(By.xpath("//a[@href='http://localhost/litecart/admin/?app=appearance&doc=template']")).click();
-    wd.findElement(By.xpath("//h1[contains(text(),'Template')]"));
-    wd.findElement(By.xpath("//a[@href='http://localhost/litecart/admin/?app=appearance&doc=logotype']")).click();
-    wd.findElement(By.xpath("//h1[contains(text(),'Logotype')]")); */
-
-
     wd.manage().deleteAllCookies();
   }
 
