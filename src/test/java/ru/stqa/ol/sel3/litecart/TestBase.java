@@ -11,6 +11,8 @@ import org.testng.annotations.BeforeMethod;
 
 import java.util.concurrent.TimeUnit;
 
+import static org.openqa.selenium.support.ui.ExpectedConditions.titleIs;
+
 /**
  * Created by A546902 on 2017-02-02.
  */
@@ -21,19 +23,28 @@ public class TestBase {
   public final static ThreadLocal<WebDriver> tlDriver = new ThreadLocal<>();
   //l3_m12 Delaem Thread dlq zapuska neskol'kih brauzerov odnovremenne. Togda ubiraem static pered wd, t.k. ona budet inicializirovat'sq pered kazhdim testovim metodom @Test
 
-  public boolean isElementPresent (By locator) { //l4_m8 delaem 2 metoda
+  public boolean isElementPresent(By locator) { //l4_m8 delaem 2 metoda
     try {
       wd.findElement(locator);
       return true;
     } catch (InvalidSelectorException ex) { //l4_m8  4tobi test padal na "div[" nado dobavit' catch InvalidSelectorException
       throw ex;
-    }
-      catch (NoSuchElementException ex) {
+    } catch (NoSuchElementException ex) {
       return false;
     }
   }
-  public boolean areElementsPresent (By locator){ //l4_m8 delaem 2 metoda
+
+  public boolean areElementsPresent(By locator) { //l4_m8 delaem 2 metoda
     return wd.findElements(locator).size() > 0;
+  }
+
+  public void adminLogin() {
+    wd.get("http://localhost/litecart/admin/");
+    wd.findElement(By.name("username")).sendKeys("admin");
+    wd.findElement(By.name("password")).sendKeys("admin");
+    wd.findElement(By.name("username")).click();
+    wd.findElement(By.name("login")).click();
+    wait.until(titleIs("My Store"));
   }
 
   @BeforeMethod
@@ -48,8 +59,8 @@ public class TestBase {
     options.addArguments("start-maximized");// http://peter.sh/experiments/chromium-command-line-switches/#start-fullscreen
     wd = new ChromeDriver(options);*/
 
-   // if (wd != null) {      return;    }
-   if (tlDriver.get() !=null ) {
+    // if (wd != null) {      return;    }
+    if (tlDriver.get() != null) {
       wd = tlDriver.get();
       wait = new WebDriverWait(wd, 10);
       return;
@@ -59,11 +70,15 @@ public class TestBase {
     wd.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS); //l4_m9 Ожидание появления элемента. 5 sekund na ozhidanie elementa. Esli ne naidet, yo isklu4enie NoSuchElementException. Mehanizm neqvnih ozhidanii
     wait = new WebDriverWait(wd, 10); //sel3_l2_m2
 
-    Runtime.getRuntime().addShutdownHook(new Thread(() -> {wd.quit(); wd = null;} ));//l3_m12 Esli ne perezapuskat' tot zhe brauzer posle kazhdogo @Test */
+    Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+      wd.quit();
+      wd = null;
+    }));//l3_m12 Esli ne perezapuskat' tot zhe brauzer posle kazhdogo @Test */
   }
 
   @AfterMethod(alwaysRun = true)
   public void stop() {
+    wd.manage().deleteAllCookies();
     //wd.quit();//l3_m12 dlq kazhdogo @Test brauzer budet perezapuskat'sq, esli ne hotim, to shutHook vmesto wd.quit
     //wd = null;
   }

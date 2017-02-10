@@ -1,5 +1,6 @@
 package ru.stqa.ol.sel3.litecart;
 
+import com.google.common.collect.Ordering;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -16,6 +17,63 @@ import static org.testng.Assert.assertTrue;
  * Created by A546902 on 2017-01-31.
  */
 public class Litecart extends TestBase {
+  @Test
+  public void zadanie10() { // Задание 10. Проверить, что открывается правильная страница товара http://software-testing.ru/lms/mod/assign/view.php?id=38592
+/*    Более точно, нужно открыть главную страницу, выбрать первый товар в категории Campaigns и проверить следующее:
+    а) на главной странице и на странице товара совпадает текст названия товара
+    б) на главной странице и на странице товара совпадают цены (обычная и акционная)
+    в) обычная цена серая и зачёркнутая, а акционная цена красная и жирная (это надо проверить на каждой странице независимо, при этом цвета на разных страницах могут не совпадать)
+    г) акционная цена крупнее, чем обычная (это надо проверить на каждой странице независимо)
+    Необходимо убедиться, что тесты работают в разных браузерах, желательно проверить во всех трёх ключевых браузерах (Chrome, Firefox, IE).*/
+    wd.get("http://localhost/litecart/");
+    WebElement duck= wd.findElement(By.cssSelector("div#box-campaigns div.name"));
+    WebElement duckRegular = wd.findElement(By.cssSelector("div#box-campaigns s.regular-price"));
+    WebElement duckCampaign = wd.findElement(By.cssSelector("div#box-campaigns strong.campaign-price"));
+    String duckName = duck.getAttribute("textContent"); //dlq parametra getAttribute smotri tab Properties v Chrome!
+    String duckRegularPrice = duckRegular.getAttribute("textContent");
+    String duckCampaignPrice = duckCampaign.getAttribute("textContent");
+
+    assertEquals( duckRegular.getCssValue("color"),"rgba(119, 119, 119, 1)");
+    assertEquals( duckRegular.getCssValue("text-decoration"),"line-through");
+
+    assertEquals( duckCampaign.getCssValue("color"),"rgba(204, 0, 0, 1)");
+    assertEquals( duckCampaign.getCssValue("font-weight"),"bold");
+
+    System.out.println(duckRegular.getCssValue("text-decoration"));
+
+    wd.findElement(By.cssSelector("div#box-campaigns a.link")).click();
+    WebElement duckRegular1 = wd.findElement(By.cssSelector("s.regular-price"));
+    WebElement duckCampaign1 = wd.findElement(By.cssSelector("strong.campaign-price"));
+    assertEquals(wd.findElement(By.cssSelector("h1.title")).getAttribute("textContent"), duckName);
+    assertEquals(duckRegular1.getAttribute("textContent"), duckRegularPrice);
+    assertEquals(duckCampaign1.getAttribute("textContent"), duckCampaignPrice);
+
+    assertEquals( wd.findElement(By.cssSelector("body")).getCssValue("color"),"rgba(102, 102, 102, 1)");
+    assertEquals( duckRegular1.getCssValue("text-decoration"),"line-through");
+    assertEquals( duckCampaign1.getCssValue("color"),"rgba(204, 0, 0, 1)");
+    assertEquals( duckCampaign1.getCssValue("font-weight"),"bold");
+
+
+
+
+    System.out.println(duckName + "\n" + duckRegularPrice + " " + duckCampaignPrice);
+    //try {       Thread.sleep(1000);        } catch (Exception e) {          throw new RuntimeException(e);        }
+
+  }
+
+  @Test
+  //zadanie 9 Проверить сортировку стран и геозон в админке http://software-testing.ru/lms/mod/assign/view.php?id=38591
+  public void zadanie9() {
+    adminLogin();
+    wd.get("http://localhost/litecart/admin/?app=countries&doc=countries");
+    List<WebElement> rows = wd.findElements(By.cssSelector("tr[class='row']"));
+    List<String> countries = null;
+    for (WebElement row : rows) {
+      String country = row.findElement(By.cssSelector("tr[class='row']")).getText();
+      countries.add(country);
+    }
+    boolean sorted = Ordering.natural().isOrdered(countries);
+  }
 
   @Test(enabled = true)
   public void zadanie8() { //Задание 8. Сделайте сценарий, проверяющий наличие стикеров у товаров http://software-testing.ru/lms/mod/assign/view.php?id=38589
@@ -34,16 +92,11 @@ public class Litecart extends TestBase {
 
   @Test(enabled = true) //Задание 7.
   public void zadanie7() {
-    wd.get("http://localhost/litecart/admin/");
-    wd.findElement(By.name("username")).sendKeys("admin");
-    wd.findElement(By.name("password")).sendKeys("admin");
-    wd.findElement(By.name("username")).click();
-    wd.findElement(By.name("login")).click();
-    wait.until(titleIs("My Store"));
+    adminLogin();
     //Задание 7. Сделайте сценарий, проходящий по всем разделам админки http://software-testing.ru/lms/mod/assign/view.php?id=38588
     List<WebElement> rows = wd.findElements(By.cssSelector("li#app-"));
     int i = 0;
-    while ( rows.size() != i ) {
+    while (rows.size() != i) {
       rows.get(i).findElement(By.cssSelector("a")).click();
       assertTrue(isElementPresent(By.cssSelector("h1")));
       i++;
@@ -59,7 +112,6 @@ public class Litecart extends TestBase {
       }
       rows = wd.findElements(By.cssSelector("li#app-"));
     }
-    wd.manage().deleteAllCookies();
   }
 
   @Test(enabled = false)
@@ -81,15 +133,5 @@ public class Litecart extends TestBase {
     Assert.assertTrue(isElementPresent(By.cssSelector(".rc"))); //l5_m9 Nawelsq element klassa rc. Na stranice mnogo takih blokov, no mi iwem odin
   }
 
-  @Test(enabled = false)
-  public void builderAdminLogin2() {
-    wd.get("http://localhost/litecart/admin/login.php?redirect_url=%2Flitecart%2Fadmin%2F");
-    wd.findElement(By.name("password")).sendKeys("admin");
-    wd.findElement(By.name("username")).click();
-    wd.findElement(By.name("username")).clear();
-    wd.findElement(By.name("username")).sendKeys("admin");
-    wd.findElement(By.name("login")).click();
-    wd.manage().deleteAllCookies();
 
-  }
 }
