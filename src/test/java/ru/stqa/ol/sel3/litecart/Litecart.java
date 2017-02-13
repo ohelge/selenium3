@@ -5,10 +5,7 @@ import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
-
 import java.util.List;
-
-import static org.openqa.selenium.support.ui.ExpectedConditions.javaScriptThrowsNoExceptions;
 import static org.openqa.selenium.support.ui.ExpectedConditions.titleIs;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
@@ -17,6 +14,7 @@ import static org.testng.Assert.assertTrue;
  * Created by A546902 on 2017-01-31.
  */
 public class Litecart extends TestBase {
+
   @Test
   public void zadanie10() { // Задание 10. Проверить, что открывается правильная страница товара http://software-testing.ru/lms/mod/assign/view.php?id=38592
 /*    Более точно, нужно открыть главную страницу, выбрать первый товар в категории Campaigns и проверить следующее:
@@ -28,38 +26,30 @@ public class Litecart extends TestBase {
     wd.get("http://localhost/litecart/");
     WebElement duck= wd.findElement(By.cssSelector("div#box-campaigns div.name"));
     WebElement duckRegular = wd.findElement(By.cssSelector("div#box-campaigns s.regular-price"));
-    WebElement duckCampaign = wd.findElement(By.cssSelector("div#box-campaigns strong.campaign-price"));
+    WebElement duckCampaign = wd.findElement(By.cssSelector("div#box-campaigns strong.campaign-price"));// акционная жирная
     String duckName = duck.getAttribute("textContent"); //dlq parametra getAttribute smotri tab Properties v Chrome!
     String duckRegularPrice = duckRegular.getAttribute("textContent");
     String duckCampaignPrice = duckCampaign.getAttribute("textContent");
-
-    assertEquals( duckRegular.getCssValue("color"),"rgba(119, 119, 119, 1)");
-    assertEquals( duckRegular.getCssValue("text-decoration"),"line-through");
-
-    assertEquals( duckCampaign.getCssValue("color"),"rgba(204, 0, 0, 1)");
-    assertEquals( duckCampaign.getCssValue("font-weight"),"bold");
-
-    System.out.println(duckRegular.getCssValue("text-decoration"));
+    assertTrue(duckRegular.getCssValue("color").contains("119, 119, 119"));//обычная цена серая
+    assertEquals( duckRegular.getCssValue("text-decoration"),"line-through");//обычная цена зачёркнутая,
+    assertTrue( duckCampaign.getCssValue("color").contains("204, 0, 0"));// акционная цена красная
+    assertTrue(fontSize(duckRegular.getCssValue("font-size")) < fontSize(duckCampaign.getCssValue("font-size")));// г) акционная цена крупнее, чем обычная
+    System.out.println(fontSize(duckRegular.getCssValue("font-size"))  +"  " + fontSize(duckCampaign.getCssValue("font-size")));
 
     wd.findElement(By.cssSelector("div#box-campaigns a.link")).click();
-    WebElement duckRegular1 = wd.findElement(By.cssSelector("s.regular-price"));
-    WebElement duckCampaign1 = wd.findElement(By.cssSelector("strong.campaign-price"));
-    assertEquals(wd.findElement(By.cssSelector("h1.title")).getAttribute("textContent"), duckName);
-    assertEquals(duckRegular1.getAttribute("textContent"), duckRegularPrice);
-    assertEquals(duckCampaign1.getAttribute("textContent"), duckCampaignPrice);
+    try {       Thread.sleep(1000);        } catch (Exception e) {          throw new RuntimeException(e);        }
+    WebElement duckRegularDuckPage = wd.findElement(By.cssSelector("s.regular-price"));
+    WebElement duckCampaignDuckPage = wd.findElement(By.cssSelector("strong.campaign-price"));// акционная цена жирная
+    assertEquals(wd.findElement(By.cssSelector("h1.title")).getAttribute("textContent"), duckName); // а)  на главной странице и на странице товара совпадает текст названия товара
+    assertEquals(duckRegularDuckPage.getAttribute("textContent"), duckRegularPrice);//б) на главной странице и на странице товара совпадают цены (обычная)
+    assertEquals(duckCampaignDuckPage.getAttribute("textContent"), duckCampaignPrice);//б) на главной странице и на странице товара совпадают цены (акционная)
+    assertTrue( wd.findElement(By.cssSelector("body")).getCssValue("color").contains("102, 102, 102"));///обычная цена серая
+    assertEquals( duckRegularDuckPage.getCssValue("text-decoration"),"line-through");//обычная цена зачёркнутая,
+    assertTrue( duckCampaignDuckPage.getCssValue("color").contains("204, 0, 0")) ;// акционная цена красная
+    assertTrue(fontSize(duckRegularDuckPage.getCssValue("font-size")) < fontSize(duckCampaignDuckPage.getCssValue("font-size")));// г) акционная цена крупнее, чем обычная
+    System.out.println(fontSize(duckRegularDuckPage.getCssValue("font-size"))  +"  " + fontSize(duckCampaignDuckPage.getCssValue("font-size")));
 
-    assertEquals( wd.findElement(By.cssSelector("body")).getCssValue("color"),"rgba(102, 102, 102, 1)");
-    assertEquals( duckRegular1.getCssValue("text-decoration"),"line-through");
-    assertEquals( duckCampaign1.getCssValue("color"),"rgba(204, 0, 0, 1)");
-    assertEquals( duckCampaign1.getCssValue("font-weight"),"bold");
-
-
-
-
-    System.out.println(duckName + "\n" + duckRegularPrice + " " + duckCampaignPrice);
-    //try {       Thread.sleep(1000);        } catch (Exception e) {          throw new RuntimeException(e);        }
-
-  }
+ }
 
   @Test
   //zadanie 9 Проверить сортировку стран и геозон в админке http://software-testing.ru/lms/mod/assign/view.php?id=38591

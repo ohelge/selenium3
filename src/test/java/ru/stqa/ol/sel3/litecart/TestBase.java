@@ -5,12 +5,12 @@ import org.openqa.selenium.InvalidSelectorException;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
-
 import java.util.concurrent.TimeUnit;
-
 import static org.openqa.selenium.support.ui.ExpectedConditions.titleIs;
 
 /**
@@ -45,6 +45,10 @@ public class TestBase {
     wd.findElement(By.name("username")).click();
     wd.findElement(By.name("login")).click();
     wait.until(titleIs("My Store"));
+  }
+  public double fontSize(String str) {
+    double font = Double.parseDouble(str.substring(0, str.length() -2));
+    return font;
   }
 
   @BeforeMethod
