@@ -6,8 +6,11 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.annotations.Test;
 import java.util.List;
+import java.util.Random;
+
 import static org.openqa.selenium.support.ui.ExpectedConditions.titleIs;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 /**
@@ -15,6 +18,38 @@ import static org.testng.Assert.assertTrue;
  */
 public class Litecart extends TestBase {
 
+  @Test
+  public void zadanie11() { /*Задание 11. Сделайте сценарий регистрации пользователя
+    1) регистрация новой учётной записи с достаточно уникальным адресом электронной почты (чтобы не конфликтовало с ранее созданными пользователями, в том числе при предыдущих запусках того же самого сценария),
+    2) выход (logout), потому что после успешной регистрации автоматически происходит вход,
+    3) повторный вход в только что созданную учётную запись,   4) и ещё раз выход.*/
+    Random rnd = new Random();
+    wd.get("http://localhost/litecart/");
+    wd.findElement(By.cssSelector("div#box-account-login a")).click();
+    wd.findElement(By.cssSelector("input[name='firstname']")).sendKeys(generateString(rnd, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", 5 ));
+    wd.findElement(By.cssSelector("input[name='lastname']")).sendKeys(generateString(rnd, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", 10 ));
+    wd.findElement(By.cssSelector("input[name='address1']")).sendKeys(generateString(rnd, "ABCDEFGHIJKLMNOPQRSTUVWXYZ 0123456789", 30 ));
+    wd.findElement(By.cssSelector("input[name='postcode'")).sendKeys(generateString(rnd, "123456789", 5 ));
+    wd.findElement(By.cssSelector("input[name='city']")).sendKeys(generateString(rnd, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", 11 ));
+    wd.findElement(By.name("country_code")).findElement(By.cssSelector("[value='US']")).click();
+    String email= generateString(rnd, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", 6) + "@" + generateString(rnd, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", 4) + "com";
+    wd.findElement(By.cssSelector("input[name='email']")).sendKeys(email);
+    String placeholder= wd.findElement(By.cssSelector("input[name='phone']")).getAttribute("placeholder");
+    wd.findElement(By.cssSelector("input[name='phone']")).sendKeys(placeholder + generateString(rnd, "0123456789", 11 ));
+    String pwd= generateString(rnd, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcd0123456789!#%&/?=()", 10);
+    wd.findElement(By.cssSelector("input[name='password']")).sendKeys(pwd);
+    wd.findElement(By.cssSelector("input[name='confirmed_password']")).sendKeys(pwd);
+    wd.findElement(By.cssSelector("button[name='create_account']")).click();
+    if (isElementPresent(By.xpath("//a[.='Logout']"))  ) {
+     wd.findElement(By.xpath("//a[.='Logout']")).click();
+     wd.findElement(By.cssSelector("input[name='email']")).sendKeys(email);
+     wd.findElement(By.cssSelector("input[name='password']")).sendKeys(pwd);
+     wd.findElement(By.cssSelector("button[name='login']")).click();
+     //try {       Thread.sleep(2000);        } catch (Exception e) {          throw new RuntimeException(e);        }
+     assertFalse(isElementPresent(By.xpath("//div[.=' Wrong password or the account is disabled, or does not exist']")));
+     wd.findElement(By.xpath("//a[.='Logout']")).click();
+    }
+  }
   @Test
   public void zadanie10() { // Задание 10. Проверить, что открывается правильная страница товара http://software-testing.ru/lms/mod/assign/view.php?id=38592
 /*    Более точно, нужно открыть главную страницу, выбрать первый товар в категории Campaigns и проверить следующее:

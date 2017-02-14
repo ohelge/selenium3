@@ -10,6 +10,8 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import static org.openqa.selenium.support.ui.ExpectedConditions.titleIs;
 
@@ -36,6 +38,16 @@ public class TestBase {
 
   public boolean areElementsPresent(By locator) { //l4_m8 delaem 2 metoda
     return wd.findElements(locator).size() > 0;
+  }
+
+  public static String generateString(Random rng, String characters, int length)
+  {
+    char[] text = new char[length];
+    for (int i = 0; i < length; i++)
+    {
+      text[i] = characters.charAt(rng.nextInt(characters.length()));
+    }
+    return new String(text);
   }
 
   public void adminLogin() {
