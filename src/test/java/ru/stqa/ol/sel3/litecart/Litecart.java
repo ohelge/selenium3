@@ -3,11 +3,12 @@ package ru.stqa.ol.sel3.litecart;
 import com.google.common.collect.Ordering;
 import org.junit.Assert;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.Select;
 import org.testng.annotations.Test;
 import java.util.List;
 import java.util.Random;
-
 import static org.openqa.selenium.support.ui.ExpectedConditions.titleIs;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
@@ -17,12 +18,45 @@ import static org.testng.Assert.assertTrue;
  * Created by A546902 on 2017-01-31.
  */
 public class Litecart extends TestBase {
+  @Test
+  public void zadanie12() { /*Задание 12. Сделайте сценарий добавления товара
+Сделайте сценарий для добавления нового товара (продукта) в учебном приложении litecart (в админке).
+Для добавления товара нужно открыть меню Catalog, в правом верхнем углу нажать кнопку "Add New Product", заполнить поля с информацией о товаре и сохранить.
+Достаточно заполнить только информацию на вкладках General, Information и Prices. Скидки (Campains) на вкладке Prices можно не добавлять.
+Переключение между вкладками происходит не мгновенно, поэтому после переключения можно сделать небольшую паузу (о том, как делать более правильные ожидания, будет рассказано в следующих занятиях).
+Картинку с изображением товара нужно уложить в репозиторий вместе с кодом. При этом указывать в коде полный абсолютный путь к файлу плохо, на другой машине работать не будет. Надо средствами языка программирования преобразовать относительный путь в абсолютный.
+После сохранения товара нужно убедиться, что он появился в каталоге (в админке). Клиентскую часть магазина можно не проверять.*/
+    adminLogin();
+    wd.findElement(By.xpath("//ul/*[2]/a")).click();
+    assertEquals(wd.findElement(By.cssSelector("h1")).getAttribute("innerText"), " Catalog");
+    wd.findElement(By.cssSelector("div a.button:nth-child(2)")).click();
+    assertEquals(wd.findElement(By.cssSelector("h1")).getAttribute("innerText"), " Add New Product");
+    wd.findElement(By.cssSelector("label [value='1']")).click();
+    wd.findElement(By.xpath("//*[@id='tab-general']/table/tbody/tr[2]/td/span/input")).sendKeys("dDuck");
+    wd.findElement(By.xpath("//*[@id='tab-general']/table/tbody/tr[9]/td/table/tbody/tr[1]/td/input")).sendKeys("C:/Devel/java_barancev/selenium3/src/test/resources/Sepultura.jpg");
+
+    wd.findElement(By.cssSelector("a[href='#tab-information']")).click();
+    WebElement manufacturer = wd.findElement(By.cssSelector("select[name='manufacturer_id']"));
+    ((JavascriptExecutor)wd).executeScript("arguments[0].selectedIndex = 1; arguments[0].dispatchEvent(new Event('change')) " , manufacturer);
+    wd.findElement(By.cssSelector("div.trumbowyg-editor")).sendKeys( wd.findElement(By.cssSelector("div.trumbowyg-editor")).getAttribute("baseURI") );
+
+    wd.findElement(By.cssSelector("a[href='#tab-prices']")).click();
+    wd.findElement(By.cssSelector("input[name='purchase_price']")).clear();
+    wd.findElement(By.cssSelector("input[name='purchase_price']")).sendKeys("666");
+    Select price = new Select (wd.findElement(By.cssSelector("select[name=purchase_price_currency_code]")));
+    price.selectByValue("EUR");
+    wd.findElement(By.cssSelector("input[name='prices[EUR]']")).sendKeys("666");
+    System.out.println( price );
+
+    wd.findElement(By.cssSelector("button[name='save']")).click();
+    try {       Thread.sleep(2000);        } catch (Exception e) {          throw new RuntimeException(e);        }
+  }
 
   @Test
   public void zadanie11() { /*Задание 11. Сделайте сценарий регистрации пользователя
-    1) регистрация новой учётной записи с достаточно уникальным адресом электронной почты (чтобы не конфликтовало с ранее созданными пользователями, в том числе при предыдущих запусках того же самого сценария),
-    2) выход (logout), потому что после успешной регистрации автоматически происходит вход,
-    3) повторный вход в только что созданную учётную запись,   4) и ещё раз выход.*/
+1) регистрация новой учётной записи с достаточно уникальным адресом электронной почты (чтобы не конфликтовало с ранее созданными пользователями, в том числе при предыдущих запусках того же самого сценария),
+2) выход (logout), потому что после успешной регистрации автоматически происходит вход,
+3) повторный вход в только что созданную учётную запись,   4) и ещё раз выход.*/
     Random rnd = new Random();
     wd.get("http://localhost/litecart/");
     wd.findElement(By.cssSelector("div#box-account-login a")).click();
