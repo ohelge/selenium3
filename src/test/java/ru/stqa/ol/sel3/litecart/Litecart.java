@@ -7,6 +7,8 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.annotations.Test;
+
+import java.io.File;
 import java.util.List;
 import java.util.Random;
 import static org.openqa.selenium.support.ui.ExpectedConditions.titleIs;
@@ -33,7 +35,8 @@ public class Litecart extends TestBase {
     assertEquals(wd.findElement(By.cssSelector("h1")).getAttribute("innerText"), " Add New Product");
     wd.findElement(By.cssSelector("label [value='1']")).click();
     wd.findElement(By.xpath("//*[@id='tab-general']/table/tbody/tr[2]/td/span/input")).sendKeys("dDuck");
-    wd.findElement(By.xpath("//*[@id='tab-general']/table/tbody/tr[9]/td/table/tbody/tr[1]/td/input")).sendKeys("C:/Devel/java_barancev/selenium3/src/test/resources/Sepultura.jpg");
+    String path = new File("src/test/resources/Sepultura.jpg").getAbsolutePath();
+    wd.findElement(By.xpath("//*[@id='tab-general']/table/tbody/tr[9]/td/table/tbody/tr[1]/td/input")).sendKeys(path);
 
     wd.findElement(By.cssSelector("a[href='#tab-information']")).click();
     WebElement manufacturer = wd.findElement(By.cssSelector("select[name='manufacturer_id']"));
@@ -45,11 +48,10 @@ public class Litecart extends TestBase {
     wd.findElement(By.cssSelector("input[name='purchase_price']")).sendKeys("666");
     Select price = new Select (wd.findElement(By.cssSelector("select[name=purchase_price_currency_code]")));
     price.selectByValue("EUR");
-    wd.findElement(By.cssSelector("input[name='prices[EUR]']")).sendKeys("666");
-    System.out.println( price );
-
+    wd.findElement(By.cssSelector("input[name='prices[EUR]']")).sendKeys("555");
     wd.findElement(By.cssSelector("button[name='save']")).click();
-    try {       Thread.sleep(2000);        } catch (Exception e) {          throw new RuntimeException(e);        }
+    wd.findElement(By.xpath("//a[.='dDuck']"));
+    //try {       Thread.sleep(2000);        } catch (Exception e) {          throw new RuntimeException(e);        }
   }
 
   @Test

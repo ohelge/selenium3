@@ -36,6 +36,15 @@ public class TestBase {
     }
   }
 
+  public boolean isElementNotPresent (WebDriver driver, By locator ) { //L7_m2 Проверка наличия и отсутствия элемента http://software-testing.ru/lms/mod/lesson/view.php?id=38596&pageid=629
+   try {
+     driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
+     return driver.findElements(locator).size() == 0; //otklu4aem neqvnie ozhidaniq
+   } finally {
+     driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS); //vklu4aem snova neqvnie ozhidaniq
+   }
+  }
+
   public boolean areElementsPresent(By locator) { //l4_m8 delaem 2 metoda
     return wd.findElements(locator).size() > 0;
   }

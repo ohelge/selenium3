@@ -11,7 +11,7 @@ gradle-app.setting
 .gradletasknamecache
 .idea/workspace.xml
 *.log
-*.jpg
+# *.jpg
 *.csv
 *.json
 addressbook-web-tests/src/test/resources/groups.csv
