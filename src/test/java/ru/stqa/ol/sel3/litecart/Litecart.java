@@ -11,6 +11,8 @@ import org.testng.annotations.Test;
 import java.io.File;
 import java.util.List;
 import java.util.Random;
+
+import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
 import static org.openqa.selenium.support.ui.ExpectedConditions.titleIs;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
@@ -20,6 +22,38 @@ import static org.testng.Assert.assertTrue;
  * Created by A546902 on 2017-01-31.
  */
 public class Litecart extends TestBase {
+  @Test
+  public void zadanie13() {/*Задание 13. Сделайте сценарий работы с корзиной
+    Сделайте сценарий для добавления товаров в корзину и удаления товаров из корзины.
+    1) открыть главную страницу    2) открыть первый товар из списка
+    2) добавить его в корзину (при этом может случайно добавиться товар, который там уже есть, ничего страшного)
+    3) подождать, пока счётчик товаров в корзине обновится
+    4) вернуться на главную страницу, повторить предыдущие шаги ещё два раза, чтобы в общей сложности в корзине было 3 единицы товара
+    5) открыть корзину (в правом верхнем углу кликнуть по ссылке Checkout)
+    6) удалить все товары из корзины один за другим, после каждого удаления подождать, пока внизу обновится таблица*/
+    for (int i =1 ; i<=3; i++) {
+      wd.get("http://localhost/litecart/");
+      wd.findElement(By.cssSelector("ul.products a")).click();
+      wait.until(presenceOfElementLocated(By.xpath("//h1[contains(text(),'Duck')]")));
+      if (isElementPresent(By.cssSelector("select"))) {
+        Select size = new Select(wd.findElement(By.cssSelector("select[name='options[Size]']")));
+        size.selectByValue("Small");
+      };
+      wd.findElement(By.cssSelector("[name='add_cart_product']")).click();
+      //try {       Thread.sleep(2000);        } catch (Exception e) {          throw new RuntimeException(e);        }
+      wait.until (presenceOfElementLocated(By.xpath(String.format("//span[.='%s']", i)))) ;
+      assertTrue ( Integer.parseInt (wd.findElement(By.cssSelector("span.quantity")).getAttribute("textContent")) == i) ;
+    }
+    wd.findElement(By.cssSelector("div#cart a")).click();
+    wait.until(presenceOfElementLocated(By.cssSelector("span.phone")));
+    for (int i=0; i<=3; i++) {
+      wd.findElement(By.cssSelector("button[name='remove_cart_item']")).click();
+      wait.until(presenceOfElementLocated(By.cssSelector("div#order_confirmation-wrapper")));
+      if (! isElementPresent(By.cssSelector("button[name='remove_cart_item']"))) { break; }
+    }; 
+
+  }
+
   @Test
   public void zadanie12() { /*Задание 12. Сделайте сценарий добавления товара
 Сделайте сценарий для добавления нового товара (продукта) в учебном приложении litecart (в админке).
@@ -46,8 +80,8 @@ public class Litecart extends TestBase {
     wd.findElement(By.cssSelector("a[href='#tab-prices']")).click();
     wd.findElement(By.cssSelector("input[name='purchase_price']")).clear();
     wd.findElement(By.cssSelector("input[name='purchase_price']")).sendKeys("666");
-    Select price = new Select (wd.findElement(By.cssSelector("select[name=purchase_price_currency_code]")));
-    price.selectByValue("EUR");
+    Select price = new Select (wd.findElement(By.cssSelector("select[name='purchase_price_currency_code']")));
+    price.selectByValue("USD");
     wd.findElement(By.cssSelector("input[name='prices[EUR]']")).sendKeys("555");
     wd.findElement(By.cssSelector("button[name='save']")).click();
     wd.findElement(By.xpath("//a[.='dDuck']"));
