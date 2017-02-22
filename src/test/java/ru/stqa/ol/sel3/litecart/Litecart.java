@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 import java.io.File;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
 import static org.openqa.selenium.support.ui.ExpectedConditions.titleIs;
@@ -22,6 +23,30 @@ import static org.testng.Assert.assertTrue;
  * Created by A546902 on 2017-01-31.
  */
 public class Litecart extends TestBase {
+  @Test
+  public void zadanie14() {/* Сделайте сценарий, который проверяет, что ссылки на странице редактирования страны открываются в новом окне
+  Сценарий должен состоять из следующих частей:  1) зайти в админку
+  2) открыть пункт меню Countries (или страницу http://localhost/litecart/admin/?app=countries&doc=countries)
+  3) открыть на редактирование какую-нибудь страну или начать создание новой
+  4) возле некоторых полей есть ссылки с иконкой в виде квадратика со стрелкой -- они ведут на внешние страницы и открываются в новом окне, именно это и нужно проверить.
+  Конечно, можно просто убедиться в том, что у ссылки есть атрибут target="_blank". Но в этом упражнении требуется именно кликнуть по ссылке,
+   чтобы она открылась в новом окне, потом переключиться в новое окно, закрыть его, вернуться обратно, и повторить эти действия для всех таких ссылок.
+  Не забудьте, что новое окно открывается не мгновенно, поэтому требуется ожидание открытия окна.*/
+    adminLogin();
+    wd.get("http://localhost/litecart/admin/?app=countries&doc=countries");
+    wd.findElement(By.cssSelector("tr.row td a")).click();
+    String originalWindow = wd.getWindowHandle();
+    Set<String> existingWindows = wd.getWindowHandles();
+    wd.findElement(By.cssSelector("form[metod='post'] a[target='_blank']")).click();
+// ожидание появления нового окна, идентификатор которого отсутствует в списке oldWindows, остаётся в качестве самостоятельного упражнения
+    //String newWindow = wait.until(anyWindowOtherThan(existingWindows));
+    //wd.switchTo().window(newWindow);
+    wd.close();
+    wd.switchTo().window(originalWindow);
+    try {       Thread.sleep(2000);        } catch (Exception e) {          throw new RuntimeException(e);        }
+  }
+
+
   @Test
   public void zadanie13() {/*Задание 13. Сделайте сценарий работы с корзиной
     Сделайте сценарий для добавления товаров в корзину и удаления товаров из корзины.
@@ -50,8 +75,7 @@ public class Litecart extends TestBase {
       wd.findElement(By.cssSelector("button[name='remove_cart_item']")).click();
       wait.until(presenceOfElementLocated(By.cssSelector("div#order_confirmation-wrapper")));
       if (! isElementPresent(By.cssSelector("button[name='remove_cart_item']"))) { break; }
-    }; 
-
+    }
   }
 
   @Test
@@ -64,9 +88,9 @@ public class Litecart extends TestBase {
 После сохранения товара нужно убедиться, что он появился в каталоге (в админке). Клиентскую часть магазина можно не проверять.*/
     adminLogin();
     wd.findElement(By.xpath("//ul/*[2]/a")).click();
-    assertEquals(wd.findElement(By.cssSelector("h1")).getAttribute("innerText"), " Catalog");
+    assertEquals(wd.findElement(By.cssSelector("h1")).getText(), "Catalog");
     wd.findElement(By.cssSelector("div a.button:nth-child(2)")).click();
-    assertEquals(wd.findElement(By.cssSelector("h1")).getAttribute("innerText"), " Add New Product");
+    assertEquals(wd.findElement(By.cssSelector("h1")).getText(), "Add New Product");
     wd.findElement(By.cssSelector("label [value='1']")).click();
     wd.findElement(By.xpath("//*[@id='tab-general']/table/tbody/tr[2]/td/span/input")).sendKeys("dDuck");
     String path = new File("src/test/resources/Sepultura.jpg").getAbsolutePath();
