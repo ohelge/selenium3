@@ -2,9 +2,7 @@ package ru.stqa.ol.sel3.litecart;
 
 import com.google.common.collect.Ordering;
 import org.junit.Assert;
-import org.openqa.selenium.By;
-import org.openqa.selenium.JavascriptExecutor;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.Select;
 import org.testng.annotations.Test;
 
@@ -12,6 +10,7 @@ import java.io.File;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
 import static org.openqa.selenium.support.ui.ExpectedConditions.titleIs;
@@ -48,7 +47,7 @@ public class Litecart extends TestBase {
 
 
   @Test
-  public void zadanie13() {/*Задание 13. Сделайте сценарий работы с корзиной
+  public void zadanie13() throws InterruptedException {/*Задание 13. Сделайте сценарий работы с корзиной
     Сделайте сценарий для добавления товаров в корзину и удаления товаров из корзины.
     1) открыть главную страницу    2) открыть первый товар из списка
     2) добавить его в корзину (при этом может случайно добавиться товар, который там уже есть, ничего страшного)
@@ -56,14 +55,15 @@ public class Litecart extends TestBase {
     4) вернуться на главную страницу, повторить предыдущие шаги ещё два раза, чтобы в общей сложности в корзине было 3 единицы товара
     5) открыть корзину (в правом верхнем углу кликнуть по ссылке Checkout)
     6) удалить все товары из корзины один за другим, после каждого удаления подождать, пока внизу обновится таблица*/
+    wd.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS); // Неявные ожидания надо отключить, потому что в этом сценарии они приводят не нужному торможению.
     for (int i =1 ; i<=3; i++) {
       wd.get("http://localhost/litecart/");
       wd.findElement(By.cssSelector("ul.products a")).click();
-      wait.until(presenceOfElementLocated(By.xpath("//h1[contains(text(),'Duck')]")));
+      wait.until(presenceOfElementLocated(By.xpath("//button[@name='add_cart_product']")));
       if (isElementPresent(By.cssSelector("select"))) {
         Select size = new Select(wd.findElement(By.cssSelector("select[name='options[Size]']")));
         size.selectByValue("Small");
-      };
+      }
       wd.findElement(By.cssSelector("[name='add_cart_product']")).click();
       //try {       Thread.sleep(2000);        } catch (Exception e) {          throw new RuntimeException(e);        }
       wait.until (presenceOfElementLocated(By.xpath(String.format("//span[.='%s']", i)))) ;
@@ -71,11 +71,18 @@ public class Litecart extends TestBase {
     }
     wd.findElement(By.cssSelector("div#cart a")).click();
     wait.until(presenceOfElementLocated(By.cssSelector("span.phone")));
-    for (int i=0; i<=3; i++) {
-      wd.findElement(By.cssSelector("button[name='remove_cart_item']")).click();
-      wait.until(presenceOfElementLocated(By.cssSelector("div#order_confirmation-wrapper")));
-      if (! isElementPresent(By.cssSelector("button[name='remove_cart_item']"))) { break; }
-    }
+    do {
+      for (int count = 0;; count++) { //vklu4aem qvnie ozhidaniq
+        if (count > 10)
+          throw new TimeoutException();
+        try {
+          wd.findElement(By.cssSelector("button[name='remove_cart_item']")).click();
+          try {       Thread.sleep(2000);        } catch (Exception e) {          throw new RuntimeException(e);        }
+          break;
+        }catch (NoSuchElementException e) {}
+        Thread.sleep(1000);
+      }
+    }while (! isElementPresent(By.xpath("//*[.='There are no items in your cart.']")));
   }
 
   @Test
