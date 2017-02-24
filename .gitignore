@@ -50,3 +50,4 @@ buildNumber.properties
 ## Plugin-specific files:
 # IntelliJ
 /out/
+*.png

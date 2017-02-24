@@ -258,10 +258,9 @@ public class Litecart extends TestBase {
     //Assert.assertFalse(areElementsPresent(By.name("XXX")));
     //Assert.assertFalse(areElementsPresent(By.xpath("//div[")));//l4_m8 net parnoi skobki. Togda vibrasit'sq isklu4enie
     //Assert.assertFalse(isElementPresent(By.xpath("//div[")));//l4_m8 net parnoi skobki. Togda ne vibrasit'sq isklu4enie t.k. est' ego perehvat v metode. 4tobi test padal nado dobavit' catch InvalidSelectorException
-    wd.findElement(By.name("btnG")).click();
+    //wd.findElement(By.name("btnG")).click();
+    wd.findElement(By.name("_btnG")).click();//L10_m5 lomaem lokator,4tobi shvatit' isklu4enie i skrinwot sm. public void onException(Throwable throwable, WebDriver driver)
     wait.until(titleIs("webdriver - Sök på Google"));
     Assert.assertTrue(isElementPresent(By.cssSelector(".rc"))); //l5_m9 Nawelsq element klassa rc. Na stranice mnogo takih blokov, no mi iwem odin
   }
-
-
 }
