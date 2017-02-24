@@ -4,9 +4,11 @@ import com.google.common.collect.Ordering;
 import org.junit.Assert;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.Test;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -32,7 +34,7 @@ public class Litecart extends TestBase {
    чтобы она открылась в новом окне, потом переключиться в новое окно, закрыть его, вернуться обратно, и повторить эти действия для всех таких ссылок.
   Не забудьте, что новое окно открывается не мгновенно, поэтому требуется ожидание открытия окна.*/
     adminLogin();
-    wd.get("http://localhost/litecart/admin/?app=countries&doc=countries");
+    wd.get(url + "/litecart/admin/?app=countries&doc=countries");
     wd.findElement(By.cssSelector("tr.row td a")).click();
     String originalWindow = wd.getWindowHandle();
     Set<String> existingWindows = wd.getWindowHandles();
@@ -57,7 +59,7 @@ public class Litecart extends TestBase {
     6) удалить все товары из корзины один за другим, после каждого удаления подождать, пока внизу обновится таблица*/
     wd.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS); // Неявные ожидания надо отключить, потому что в этом сценарии они приводят не нужному торможению.
     for (int i =1 ; i<=3; i++) {
-      wd.get("http://localhost/litecart/");
+      wd.get(url + "/litecart/");
       wd.findElement(By.cssSelector("ul.products a")).click();
       wait.until(presenceOfElementLocated(By.xpath("//button[@name='add_cart_product']")));
       if (isElementPresent(By.cssSelector("select"))) {
@@ -65,7 +67,6 @@ public class Litecart extends TestBase {
         size.selectByValue("Small");
       }
       wd.findElement(By.cssSelector("[name='add_cart_product']")).click();
-      //try {       Thread.sleep(2000);        } catch (Exception e) {          throw new RuntimeException(e);        }
       wait.until (presenceOfElementLocated(By.xpath(String.format("//span[.='%s']", i)))) ;
       assertTrue ( Integer.parseInt (wd.findElement(By.cssSelector("span.quantity")).getAttribute("textContent")) == i) ;
     }
@@ -125,7 +126,7 @@ public class Litecart extends TestBase {
 2) выход (logout), потому что после успешной регистрации автоматически происходит вход,
 3) повторный вход в только что созданную учётную запись,   4) и ещё раз выход.*/
     Random rnd = new Random();
-    wd.get("http://localhost/litecart/");
+    wd.get(url + "/litecart/");
     wd.findElement(By.cssSelector("div#box-account-login a")).click();
     wd.findElement(By.cssSelector("input[name='firstname']")).sendKeys(generateString(rnd, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", 5 ));
     wd.findElement(By.cssSelector("input[name='lastname']")).sendKeys(generateString(rnd, "ABCDEFGHIJKLMNOPQRSTUVWXYZ", 10 ));
@@ -159,7 +160,7 @@ public class Litecart extends TestBase {
     в) обычная цена серая и зачёркнутая, а акционная цена красная и жирная (это надо проверить на каждой странице независимо, при этом цвета на разных страницах могут не совпадать)
     г) акционная цена крупнее, чем обычная (это надо проверить на каждой странице независимо)
     Необходимо убедиться, что тесты работают в разных браузерах, желательно проверить во всех трёх ключевых браузерах (Chrome, Firefox, IE).*/
-    wd.get("http://localhost/litecart/");
+    wd.get(url + "/litecart/");
     WebElement duck= wd.findElement(By.cssSelector("div#box-campaigns div.name"));
     WebElement duckRegular = wd.findElement(By.cssSelector("div#box-campaigns s.regular-price"));
     WebElement duckCampaign = wd.findElement(By.cssSelector("div#box-campaigns strong.campaign-price"));// акционная жирная
@@ -191,19 +192,22 @@ public class Litecart extends TestBase {
   //zadanie 9 Проверить сортировку стран и геозон в админке http://software-testing.ru/lms/mod/assign/view.php?id=38591
   public void zadanie9() {
     adminLogin();
-    wd.get("http://localhost/litecart/admin/?app=countries&doc=countries");
-    List<WebElement> rows = wd.findElements(By.cssSelector("tr[class='row']"));
-    List<String> countries = null;
+    wd.get(url + "/litecart/admin/?app=countries&doc=countries");
+    List<WebElement> rows = wd.findElements(By.cssSelector("tr.row"));
+    List<String> countries = new ArrayList<>();
+    int i = 0;
     for (WebElement row : rows) {
-      String country = row.findElement(By.cssSelector("tr[class='row']")).getText();
+      String country = row.findElement(By.cssSelector("td:nth-child(5)")).getText();
       countries.add(country);
+      i++;
+      System.out.println(i+ " ");
     }
-    boolean sorted = Ordering.natural().isOrdered(countries);
+       assertTrue( Ordering.natural().isOrdered(countries) );
   }
 
   @Test(enabled = true)
   public void zadanie8() { //Задание 8. Сделайте сценарий, проверяющий наличие стикеров у товаров http://software-testing.ru/lms/mod/assign/view.php?id=38589
-    wd.get("http://localhost/litecart");
+    wd.get(url + "/litecart");
     /*List<WebElement> ducks = wd.findElements(By.xpath("//ul[@class='listing-wrapper products']/li[@class='product column shadow hover-light']"));
     проверки типа li[@class='product column shadow hover-light'] в xpath весьма опасны, потому что если вдруг этому элементу будет добавлен новый класс
     (верстальщики могут запросто это сделать) или даже просто изменится порядок классов -- локатор перестанет работать. */
@@ -240,7 +244,7 @@ public class Litecart extends TestBase {
     }
   }
 
-  @Test(enabled = false)
+  @Test(enabled = true)
   public void google() {
     wd.get("http://google.com"); //ili wd.navigate().to("http://google.com");
     wd.findElement(By.id("gs_ok0")).click(); //otkrivaem klaviaturu
