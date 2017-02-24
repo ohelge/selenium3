@@ -7,6 +7,8 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.events.AbstractWebDriverEventListener;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -22,12 +24,32 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.titleIs;
  */
 public class TestBase {
   //public static WebDriver wd; //s3_l3_m12 delaem static wd i wait dlq proverki esli uzhe brauzer zapuwen.
-  public WebDriver wd;
+  //public WebDriver wd;
+  public EventFiringWebDriver wd;//L10_m4 menqem tip dlq protokolirovaniq
   public WebDriverWait wait;
   public String url;
-  public final static ThreadLocal<WebDriver> tlDriver = new ThreadLocal<>();
+  //public final static ThreadLocal<WebDriver> tlDriver = new ThreadLocal<>();
+  public final static ThreadLocal<EventFiringWebDriver> tlDriver = new ThreadLocal<>();//L10_m4 menqem tip
   //l3_m12 Delaem Thread dlq zapuska neskol'kih brauzerov odnovremenne. Togda ubiraem static pered wd, t.k. ona budet inicializirovat'sq pered kazhdim testovim metodom @Test
 
+  public static class MyListener extends AbstractWebDriverEventListener {//L10_m4 klass dlq protokolirovaniq
+    //OBS! Code->Override Methods, vibiraem beforeFindBy, afterFindBy, onException:
+    @Override
+    public void beforeFindBy(By by, WebElement element, WebDriver driver) {
+      //super.beforeFindBy(by, element, driver); Ubiraem eto i piwem vmesto:
+      System.out.println(by);//vivodim po kakomu lokatoru vipolnqetsq poisk
+    }
+
+    @Override
+    public void afterFindBy(By by, WebElement element, WebDriver driver) {
+      System.out.println(by + " found!");  //vivodim 4to poisk uspewno otrabotal i element najden.Esli ne naiden to vivodim isklu4enie sm. onExeption
+    }
+
+    @Override
+    public void onException(Throwable throwable, WebDriver driver) {
+      System.out.println(throwable); //vivodim info ob isklu4enii. Dalee obora4ivaem webDriver v EventFiringDriver, sm. nizhe
+    }
+  }
 
   public boolean isElementPresent(By locator) { //l4_m8 delaem 2 metoda
     try {
@@ -95,8 +117,10 @@ public class TestBase {
       return;
     }
     url= "http://" + Inet4Address.getLocalHost().getHostAddress(); //L9_m1 : 4tobi zapuskat' udalenno server iz guest sistemi (ip: ifconfig v linux, ipconfig v Windows)
-    wd = new ChromeDriver(); //FirefoxDriver(); //ChromeDriver() //InternetExplorerDriver()
-    //wd = new RemoteWebDriver(new URL("http://10.40.190.232:4444/wd/hub"), DesiredCapabilities.chrome());
+    //wd = new ChromeDriver(); //FirefoxDriver(); //ChromeDriver() //InternetExplorerDriver()
+    wd= new EventFiringWebDriver(new ChromeDriver()); //L10_m4 obora4ivaem dlq protokolirovaniq. Menqem tip wd sm.viwe
+    wd.register(new MyListener()); //L10_m4 dobavlqem lisener
+    //wd = new RemoteWebDriver(new URL("http://10.40.190.232:4444/wd/hub"), DesiredCapabilities.chrome()); //L9_m1
     tlDriver.set(wd);
     wd.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS); //l4_m9 Ожидание появления элемента. 5 sekund na ozhidanie elementa. Esli ne naidet, yo isklu4enie NoSuchElementException. Mehanizm neqvnih ozhidanii
     wait = new WebDriverWait(wd, 10); //sel3_l2_m2
