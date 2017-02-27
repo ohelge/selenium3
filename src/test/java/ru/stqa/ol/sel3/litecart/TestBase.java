@@ -6,6 +6,9 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.logging.LogType;
+import org.openqa.selenium.logging.LoggingPreferences;
+import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.events.AbstractWebDriverEventListener;
@@ -20,6 +23,8 @@ import java.net.Inet4Address;
 import java.net.URL;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+
 import static org.openqa.selenium.support.ui.ExpectedConditions.titleIs;
 
 /**
@@ -125,9 +130,15 @@ public class TestBase {
       wait = new WebDriverWait(wd, 10);
       return;
     }
+    //L10_m6 Eti 4 stroki iz https://sites.google.com/a/chromium.org/chromedriver/logging/performance-log
+    DesiredCapabilities cap = DesiredCapabilities.chrome(); //Eti capabilities cap peredaem v ka4estve parametra v wd, sm nije
+    LoggingPreferences logPrefs = new LoggingPreferences();
+    logPrefs.enable(LogType.PERFORMANCE, Level.ALL);
+    cap.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
+
     url= "http://" + Inet4Address.getLocalHost().getHostAddress(); //L9_m1 : 4tobi zapuskat' udalenno server iz guest sistemi (ip: ifconfig v linux, ipconfig v Windows)
     //wd = new ChromeDriver(); //FirefoxDriver(); //ChromeDriver() //InternetExplorerDriver()
-    wd= new EventFiringWebDriver(new ChromeDriver()); //L10_m4 obora4ivaem dlq protokolirovaniq. Obertivaem, menqem tip wd sm.viwe
+    wd= new EventFiringWebDriver(new ChromeDriver(cap)); //L10_m4 obora4ivaem dlq protokolirovaniq. Obertivaem, menqem tip wd sm.viwe
     //wd = new RemoteWebDriver(new URL("http://10.40.190.232:4444/wd/hub"), DesiredCapabilities.chrome()); //L9_m1
     //wd = new EventFiringWebDriver (new RemoteWebDriver(new URL("http://10.40.190.232:4444/wd/hub"), DesiredCapabilities.chrome()));//Obora4ivaem v EventFiringWebDriver
     wd.register(new MyListener()); //L10_m4 dobavlqem lisener

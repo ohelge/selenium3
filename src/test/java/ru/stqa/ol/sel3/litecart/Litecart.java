@@ -25,6 +25,15 @@ import static org.testng.Assert.assertTrue;
  */
 public class Litecart extends TestBase {
   @Test
+  public void getBrowserLogs() { //L10_m6 Доступ к логам браузера
+    wd.navigate().to("http://selenium2.ru");
+    System.out.println(wd.manage().logs().getAvailableLogTypes());//vivedet "[browser, driver, client]" driver i client bespolezni a vot browser polezen
+    //Posle dobavleniq 4h strok iz https://sites.google.com/a/chromium.org/chromedriver/logging/performance-log(sm L10_m6) vivodit ewe i [performance, browser, driver, client]
+    wd.manage().logs().get("browser").forEach(l -> System.out.println(l));//L10_m6 .getAll(): mojno v cikle proitis' i vipolnit' proverki tipa net owibok, prosto Info owibki itd
+    //.filter(Level level) mojno otfil'trovat' ili cikl .forEach(lambda funk)
+    wd.manage().logs().get("performance").forEach(l -> System.out.println(l));
+  }
+  @Test
   public void zadanie14() {/* Сделайте сценарий, который проверяет, что ссылки на странице редактирования страны открываются в новом окне
   Сценарий должен состоять из следующих частей:  1) зайти в админку
   2) открыть пункт меню Countries (или страницу http://localhost/litecart/admin/?app=countries&doc=countries)
