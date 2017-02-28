@@ -141,7 +141,7 @@ public class TestBase {
     wd= new EventFiringWebDriver(new ChromeDriver(cap)); //L10_m4 obora4ivaem dlq protokolirovaniq. Obertivaem, menqem tip wd sm.viwe
     //wd = new RemoteWebDriver(new URL("http://10.40.190.232:4444/wd/hub"), DesiredCapabilities.chrome()); //L9_m1
     //wd = new EventFiringWebDriver (new RemoteWebDriver(new URL("http://10.40.190.232:4444/wd/hub"), DesiredCapabilities.chrome()));//Obora4ivaem v EventFiringWebDriver
-    wd.register(new MyListener()); //L10_m4 dobavlqem lisener
+    //wd.register(new MyListener()); //L10_m4 dobavlqem lisener
     tlDriver.set(wd);
     wd.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS); //l4_m9 Ожидание появления элемента. 5 sekund na ozhidanie elementa. Esli ne naidet, yo isklu4enie NoSuchElementException. Mehanizm neqvnih ozhidanii
     wait = new WebDriverWait(wd, 10); //sel3_l2_m2

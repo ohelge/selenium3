@@ -25,13 +25,24 @@ import static org.testng.Assert.assertTrue;
  */
 public class Litecart extends TestBase {
   @Test
+  public void zadanie17() { /*Задание 17. Проверьте отсутствие сообщений в логе браузера
+    Сделайте сценарий, который проверяет, не появляются ли в логе браузера сообщения при открытии страниц в учебном приложении, а именно -- страниц товаров в каталоге в административной панели.
+    Сценарий должен состоять из следующих частей:
+    1) зайти в админку
+    2) открыть каталог, категорию, которая содержит товары (страница http://localhost/litecart/admin/?app=catalog&doc=catalog&category_id=1)
+    3) последовательно открывать страницы товаров и проверять, не появляются ли в логе браузера сообщения (любого уровня)*/
+    adminLogin();
+    wd.get(url + "/litecart/admin/?app=catalog&doc=catalog&category_id=1");
+
+    wd.manage().logs().get("browser").forEach(l -> System.out.println(l));
+  }
+  @Test
   public void getBrowserLogs() { //L10_m6 Доступ к логам браузера
     wd.navigate().to("http://selenium2.ru");
     System.out.println(wd.manage().logs().getAvailableLogTypes());//vivedet "[browser, driver, client]" driver i client bespolezni a vot browser polezen
-    //Posle dobavleniq 4h strok iz https://sites.google.com/a/chromium.org/chromedriver/logging/performance-log(sm L10_m6) vivodit ewe i [performance, browser, driver, client]
     wd.manage().logs().get("browser").forEach(l -> System.out.println(l));//L10_m6 .getAll(): mojno v cikle proitis' i vipolnit' proverki tipa net owibok, prosto Info owibki itd
     //.filter(Level level) mojno otfil'trovat' ili cikl .forEach(lambda funk)
-    wd.manage().logs().get("performance").forEach(l -> System.out.println(l));
+    wd.manage().logs().get("performance").forEach(l -> System.out.println(l)); //Posle dobavleniq 4h strok iz https://sites.google.com/a/chromium.org/chromedriver/logging/performance-log(sm L10_m6) vivodit ewe i [performance, browser, driver, client]
   }
   @Test
   public void zadanie14() {/* Сделайте сценарий, который проверяет, что ссылки на странице редактирования страны открываются в новом окне
@@ -199,21 +210,44 @@ public class Litecart extends TestBase {
 
   @Test
   //zadanie 9 Проверить сортировку стран и геозон в админке http://software-testing.ru/lms/mod/assign/view.php?id=38591
-  public void zadanie9() {
+  public void zadanie9() {  /*1) на странице http://localhost/litecart/admin/?app=countries&doc=countries
+    а) проверить, что страны расположены в алфавитном порядке
+    б) для тех стран, у которых количество зон отлично от нуля -- открыть страницу этой страны и там проверить, что зоны расположены в алфавитном порядке
+    2) на странице http://localhost/litecart/admin/?app=geo_zones&doc=geo_zones зайти в каждую из стран и проверить, что зоны расположены в алфавитном порядке*/
     adminLogin();
     wd.get(url + "/litecart/admin/?app=countries&doc=countries");
     List<WebElement> rows = wd.findElements(By.cssSelector("tr.row"));
     List<String> countries = new ArrayList<>();
+    List<String> counriesExt = new ArrayList<>();//dlq stran s rajonami
+    List<String> zones = new ArrayList<>();//dlq zon
     int i = 0;
     for (WebElement row : rows) {
       String country = row.findElement(By.cssSelector("td:nth-child(5)")).getText();
       countries.add(country);
-      i++;
-      System.out.println(i+ " ");
+   }
+    assertTrue(Ordering.natural().isOrdered(countries));//iz. compile 'com.google.guava:guava:21.0'  import com.google.common.collect.Ordering;*/
+    for (WebElement row : rows) {
+      if (Integer.parseInt( row.findElement(By.cssSelector("td:nth-child(6)")).getText() ) != 0) {
+        String countryExt = row.findElement(By.cssSelector("td:nth-child(5)")).getText();
+        counriesExt.add(countryExt);
+        System.out.println(row.findElement(By.cssSelector("td:nth-child(6)")).getText() + " zones in "+ countryExt  );
+     }
     }
-       assertTrue( Ordering.natural().isOrdered(countries) );
+    for (i=0; i< counriesExt.size(); i++ ){
+      wd.findElement(By.xpath(String.format("//a[.='%s']", counriesExt.get(i) ))).click();
+      System.out.println(counriesExt.get(i)+ "\n");
+      List<WebElement> rowsExt = wd.findElements(By.xpath("//table[@class='dataTable']/tbody/tr[not(@class='header')]"));
+      for (WebElement rowExt : rowsExt) {
+        String zone = rowExt.findElement(By.cssSelector("td:nth-child(3)")).getText();
+        zones.add(zone);
+        System.out.println(zone + ":");
+      }
+      zones.remove(zones.size()-1);
+      assertTrue(Ordering.natural().isOrdered(zones));
+      wd.get(url + "/litecart/admin/?app=countries&doc=countries");
+      zones.clear();
+    }
   }
-
   @Test(enabled = true)
   public void zadanie8() { //Задание 8. Сделайте сценарий, проверяющий наличие стикеров у товаров http://software-testing.ru/lms/mod/assign/view.php?id=38589
     wd.get(url + "/litecart");
