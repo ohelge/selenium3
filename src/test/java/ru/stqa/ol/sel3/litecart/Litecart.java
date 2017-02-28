@@ -28,13 +28,22 @@ public class Litecart extends TestBase {
   public void zadanie17() { /*Задание 17. Проверьте отсутствие сообщений в логе браузера
     Сделайте сценарий, который проверяет, не появляются ли в логе браузера сообщения при открытии страниц в учебном приложении, а именно -- страниц товаров в каталоге в административной панели.
     Сценарий должен состоять из следующих частей:
-    1) зайти в админку
-    2) открыть каталог, категорию, которая содержит товары (страница http://localhost/litecart/admin/?app=catalog&doc=catalog&category_id=1)
+    1) зайти в админку  2) открыть каталог, категорию, которая содержит товары (страница http://localhost/litecart/admin/?app=catalog&doc=catalog&category_id=1)
     3) последовательно открывать страницы товаров и проверять, не появляются ли в логе браузера сообщения (любого уровня)*/
+    List<String> names = new ArrayList<>();
     adminLogin();
     wd.get(url + "/litecart/admin/?app=catalog&doc=catalog&category_id=1");
-
-    wd.manage().logs().get("browser").forEach(l -> System.out.println(l));
+    List<WebElement> rows = wd.findElements(By.xpath("//table[@class='dataTable']/tbody/tr[not(@class='footer') and not(@class='header') and (@class='row')] "));
+    for (WebElement row : rows) {
+      String name = row.findElement(By.cssSelector("td:nth-child(3)")).getText();
+      names.add(name);
+      System.out.println(name);
+    }
+    for (int i= 3; i< names.size(); i++) {
+      wd.findElement(By.xpath(String.format("//a[.='%s']", names.get(i) ))).click();
+      wd.manage().logs().get("browser").forEach(l -> System.out.println(l));
+      wd.get(url + "/litecart/admin/?app=catalog&doc=catalog&category_id=1");
+    }
   }
   @Test
   public void getBrowserLogs() { //L10_m6 Доступ к логам браузера
@@ -66,7 +75,6 @@ public class Litecart extends TestBase {
     wd.switchTo().window(originalWindow);
     try {       Thread.sleep(2000);        } catch (Exception e) {          throw new RuntimeException(e);        }
   }
-
 
   @Test
   public void zadanie13() throws InterruptedException {/*Задание 13. Сделайте сценарий работы с корзиной
