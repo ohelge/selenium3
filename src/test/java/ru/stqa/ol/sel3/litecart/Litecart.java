@@ -31,7 +31,7 @@ public class Litecart extends TestBase {
     1) зайти в админку  2) открыть каталог, категорию, которая содержит товары (страница http://localhost/litecart/admin/?app=catalog&doc=catalog&category_id=1)
     3) последовательно открывать страницы товаров и проверять, не появляются ли в логе браузера сообщения (любого уровня)*/
     List<String> names = new ArrayList<>();
-    adminLogin();
+    adminLogin("admin", "admin");
     wd.get(url + "/litecart/admin/?app=catalog&doc=catalog&category_id=1");
     List<WebElement> rows = wd.findElements(By.xpath("//table[@class='dataTable']/tbody/tr[not(@class='footer') and not(@class='header') and (@class='row')] "));
     for (WebElement row : rows) {
@@ -62,7 +62,7 @@ public class Litecart extends TestBase {
   Конечно, можно просто убедиться в том, что у ссылки есть атрибут target="_blank". Но в этом упражнении требуется именно кликнуть по ссылке,
    чтобы она открылась в новом окне, потом переключиться в новое окно, закрыть его, вернуться обратно, и повторить эти действия для всех таких ссылок.
   Не забудьте, что новое окно открывается не мгновенно, поэтому требуется ожидание открытия окна.*/
-    adminLogin();
+    adminLogin("admin", "admin");
     wd.get(url + "/litecart/admin/?app=countries&doc=countries");
     wd.findElement(By.cssSelector("tr.row td a")).click();
     String originalWindow = wd.getWindowHandle();
@@ -122,7 +122,7 @@ public class Litecart extends TestBase {
 Переключение между вкладками происходит не мгновенно, поэтому после переключения можно сделать небольшую паузу (о том, как делать более правильные ожидания, будет рассказано в следующих занятиях).
 Картинку с изображением товара нужно уложить в репозиторий вместе с кодом. При этом указывать в коде полный абсолютный путь к файлу плохо, на другой машине работать не будет. Надо средствами языка программирования преобразовать относительный путь в абсолютный.
 После сохранения товара нужно убедиться, что он появился в каталоге (в админке). Клиентскую часть магазина можно не проверять.*/
-    adminLogin();
+    adminLogin("admin", "admin");
     wd.findElement(By.xpath("//ul/*[2]/a")).click();
     assertEquals(wd.findElement(By.cssSelector("h1")).getText(), "Catalog");
     wd.findElement(By.cssSelector("div a.button:nth-child(2)")).click();
@@ -222,7 +222,7 @@ public class Litecart extends TestBase {
     а) проверить, что страны расположены в алфавитном порядке
     б) для тех стран, у которых количество зон отлично от нуля -- открыть страницу этой страны и там проверить, что зоны расположены в алфавитном порядке
     2) на странице http://localhost/litecart/admin/?app=geo_zones&doc=geo_zones зайти в каждую из стран и проверить, что зоны расположены в алфавитном порядке*/
-    adminLogin();
+    adminLogin("admin", "admin");
     wd.get(url + "/litecart/admin/?app=countries&doc=countries");
     List<WebElement> rows = wd.findElements(By.cssSelector("tr.row"));
     List<String> countries = new ArrayList<>();
@@ -273,7 +273,7 @@ public class Litecart extends TestBase {
 
   @Test(enabled = true) //Задание 7.
   public void zadanie7() {
-    adminLogin();
+    adminLogin("admin", "admin");
     //Задание 7. Сделайте сценарий, проходящий по всем разделам админки http://software-testing.ru/lms/mod/assign/view.php?id=38588
     List<WebElement> rows = wd.findElements(By.cssSelector("li#app-"));
     int i = 0;

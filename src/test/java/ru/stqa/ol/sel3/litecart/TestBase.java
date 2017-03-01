@@ -99,10 +99,10 @@ public class TestBase {
     return new String(text);
   }
 
-  public void adminLogin() {
+  public void adminLogin(String adminName, String pwd) {
     wd.get( url + "/litecart/admin/");
-    wd.findElement(By.name("username")).sendKeys("admin");
-    wd.findElement(By.name("password")).sendKeys("admin");
+    wd.findElement(By.name("username")).sendKeys(adminName);
+    wd.findElement(By.name("password")).sendKeys(pwd);
     wd.findElement(By.name("username")).click();
     wd.findElement(By.name("login")).click();
     wait.until(titleIs("My Store"));
