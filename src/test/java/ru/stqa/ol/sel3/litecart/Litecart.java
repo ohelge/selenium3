@@ -1,8 +1,10 @@
 package ru.stqa.ol.sel3.litecart;
 
+import com.google.common.base.Predicate;
 import com.google.common.collect.Ordering;
 import org.junit.Assert;
 import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.Test;
@@ -67,13 +69,25 @@ public class Litecart extends TestBase {
     wd.findElement(By.cssSelector("tr.row td a")).click();
     String originalWindow = wd.getWindowHandle();
     Set<String> existingWindows = wd.getWindowHandles();
-    wd.findElement(By.cssSelector("form[metod='post'] a[target='_blank']")).click();
-// ожидание появления нового окна, идентификатор которого отсутствует в списке oldWindows, остаётся в качестве самостоятельного упражнения
-    //String newWindow = wait.until(anyWindowOtherThan(existingWindows));
-    //wd.switchTo().window(newWindow);
-    wd.close();
-    wd.switchTo().window(originalWindow);
-    try {       Thread.sleep(2000);        } catch (Exception e) {          throw new RuntimeException(e);        }
+    List<WebElement> rows = wd.findElements(By.cssSelector("form[method='post'] a[target='_blank']"));
+    for (WebElement row : rows) {
+      row.click();
+      String newWindow = wait.until(anyWindowOtherThan(existingWindows));
+      wd.switchTo().window(newWindow);
+      //try {        Thread.sleep(2000);      } catch (Exception e) {        throw new RuntimeException(e);      }
+      wd.close();
+      wd.switchTo().window(originalWindow);
+    }
+  }
+  //L8_m3 ожидание появления нового окна, идентификатор которого отсутствует в списке existingWindows, остаётся в качестве самостоятельного упражнения
+  private ExpectedCondition<String> anyWindowOtherThan(Set<String> oldWindows) {
+    return new ExpectedCondition<String>() {
+      public String apply(WebDriver input) {
+        Set<String> allWindows = wd.getWindowHandles();
+        allWindows.removeAll(oldWindows);
+        if (allWindows.size() > 0) {return allWindows.iterator().next();} else return ""/*null*/;
+      }
+    };
   }
 
   @Test
