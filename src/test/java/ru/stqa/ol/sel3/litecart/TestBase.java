@@ -20,6 +20,7 @@ import org.testng.annotations.BeforeMethod;
 import java.io.File;
 import java.io.IOException;
 import java.net.Inet4Address;
+import java.net.InetAddress;
 import java.net.URL;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -136,11 +137,12 @@ public class TestBase {
     logPrefs.enable(LogType.PERFORMANCE, Level.ALL);
     cap.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
 
-    url= "http://" + Inet4Address.getLocalHost().getHostAddress(); //L9_m1 : 4tobi zapuskat' udalenno server iz guest sistemi (ip: ifconfig v linux, ipconfig v Windows)
+    url= "http://" + Inet4Address.getLocalHost().getHostAddress(); //L9_m1 : 4tobi zapuskat' udalenno server iz guest sistemi. Ne vsegda daet vnewnii ip sm: ifconfig v linux, ipconfig v Windows.
+    System.out.println(url);
     //wd = new ChromeDriver(); //FirefoxDriver(); //ChromeDriver() //InternetExplorerDriver()
     wd= new EventFiringWebDriver(new ChromeDriver(cap)); //L10_m4 obora4ivaem dlq protokolirovaniq. Obertivaem, menqem tip wd sm.viwe
     //wd = new RemoteWebDriver(new URL("http://10.40.190.232:4444/wd/hub"), DesiredCapabilities.chrome()); //L9_m1
-    //wd = new EventFiringWebDriver (new RemoteWebDriver(new URL("http://10.40.190.232:4444/wd/hub"), DesiredCapabilities.chrome()));//Obora4ivaem v EventFiringWebDriver
+    //wd = new EventFiringWebDriver (new RemoteWebDriver(new URL("http://10.0.2.15:4444/wd/hub"), DesiredCapabilities.chrome()));//Obora4ivaem v EventFiringWebDriver
     //wd.register(new MyListener()); //L10_m4 dobavlqem lisener
     tlDriver.set(wd);
     wd.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS); //l4_m9 Ожидание появления элемента. 5 sekund na ozhidanie elementa. Esli ne naidet, yo isklu4enie NoSuchElementException. Mehanizm neqvnih ozhidanii

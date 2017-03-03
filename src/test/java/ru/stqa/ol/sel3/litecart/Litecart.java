@@ -85,7 +85,7 @@ public class Litecart extends TestBase {
       public String apply(WebDriver input) {
         Set<String> allWindows = wd.getWindowHandles();
         allWindows.removeAll(oldWindows);
-        if (allWindows.size() > 0) {return allWindows.iterator().next();} else return ""/*null*/;
+        if (allWindows.size() > 0) {return allWindows.iterator().next();} else return null;
       }
     };
   }
@@ -115,17 +115,10 @@ public class Litecart extends TestBase {
     wd.findElement(By.cssSelector("div#cart a")).click();
     wait.until(presenceOfElementLocated(By.cssSelector("span.phone")));
     do {
-      for (int count = 0;; count++) { //vklu4aem qvnie ozhidaniq
-        if (count > 10)
-          throw new TimeoutException();
-        try {
           wd.findElement(By.cssSelector("button[name='remove_cart_item']")).click();
-          try {       Thread.sleep(2000);        } catch (Exception e) {          throw new RuntimeException(e);        }
-          break;
-        }catch (NoSuchElementException e) {}
-        Thread.sleep(1000);
-      }
-    }while (! isElementPresent(By.xpath("//*[.='There are no items in your cart.']")));
+          wait.until(presenceOfElementLocated(By.cssSelector("span.phone")));
+          try {       Thread.sleep(1000);        } catch (Exception e) {          throw new RuntimeException(e);        }
+      } while (! isElementPresent(By.xpath("//*[.='There are no items in your cart.']")));
   }
 
   @Test
