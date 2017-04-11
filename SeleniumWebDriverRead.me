@@ -1,0 +1,1364 @@
+								Selenium WebDriver: полное руководство 2017-01-20 - 2017-03-03 (gruppa sel-3)
+http://software-testing.ru/trainings/schedule?task=3&cid=242  
+http://selenium2.ru/news/185-selenium-webdriver.html Selenium WebDriver: полное руководство: отзыв тренера
+http://barancev.github.io/read-data-from-web-page/   как прочитать много данных с веб-страницы?
+http://stackoverflow.com/questions/3047051/how-to-determine-if-a-list-is-sorted-in-java  
+						Gist etogo read.me https://gist.github.com/ohelge/821cddbd1b960747903ad6694c818885
+https://github.com/yandex-qatools/ashot  sravnenie skrinshotov
+https://github.com/DzmitryHumianiuk/ru-tech-chats  Это - список русскоязычных чатов об IT.
+https://seleniumhq.github.io/selenium/docs/api/java/org/openqa/selenium/JavascriptExecutor.html 
+https://gitextensions.github.io/  Alexei's github choice 
+https://github.com/barancev/selenium-training-po  Page Objects
+https://github.com/mr-mig/ru-tech-chats Russian tech chats list
+							L1: Вводная лекция
+Официальный сайт Selenium: http://www.seleniumhq.org/
+Русскоязычный сайт про Selenium: http://selenium2.ru/
+						Примеры инструментов с разной схемой внедрения в браузер
+
+Selenium IDE -- пример инструмента, который работает "изнутри": https://addons.mozilla.org/ru/firefox/addon/selenium-ide/
+Sahi -- пример инструмента, который внедряется "сзади": http://sahipro.com/
+Из документации: "When we start Sahi, a small proxy server is started on port 9999. When a browser is launched from the Sahi dashboard, the browser is configured to use Sahi’s proxy. This causes all request responses to go through Sahi’s proxy. When the response is returned to the browser by the proxy, it injects javascript code into it. This injected javascript code allows Sahi to control the browser."
+Selenium WebDriver -- инструмент, который внедряется "спереди".
+
+         Интерфейсы взаимодействия с браузерами
+Chrome Remote Debugging: https://developer.chrome.com/devtools/docs/debugger-protocol
+Firefox (Gecko) Marionette: https://developer.mozilla.org/ru/docs/Marionette
+Internet Explorer COM API: https://msdn.microsoft.com/en-us/library/aa752127(v=vs.85).aspx
+
+							Вспомогательные исполняемые файлы
+Подробнее про использование этих исполняемых файлов в следующем занятии, пока просто приведены ссылки на инструменты, которые упоминались в видеоролике.
+chromedriver: https://sites.google.com/a/chromium.org/chromedriver/
+geckodriver: https://github.com/mozilla/geckodriver
+IEDriverServer (для браузеров IE 7-11): http://www.seleniumhq.org/download/
+MicrosoftWebDriver (для браузера Edge): https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/
+safaridriver будет доступен в Safari 10: https://webkit.org/blog/6900/webdriver-support-in-safari-10/
+
+					Стандарт W3C WebDriver:
+Описание рабочей группы, целей, задач и сроков: https://www.w3.org/2016/05/browser-testing-tools-charter.html
+Рабочая версия текста стандарта: https://w3c.github.io/webdriver/webdriver-spec.html
+Исходный код стандарта и баг-трекер: https://github.com/w3c/webdriver
+
+							m6 Источники информации о Selenium
+Официальный сайт: http://www.seleniumhq.org/
+Официальный блог: https://seleniumhq.wordpress.com/, никакой технической информации, только новости
+Русскоязычный сайт: http://selenium2.ru/
+Лента новостей: http://selenium2.ru/news.html  , новости публикуются чаще и больше, чем в официальном блоге
+Форум (на русском): http://software-testing.ru/forum/index.php?/forum/129-selenium-functional-testing/
+Группа в Facebook (на русском): https://www.facebook.com/groups/selenium.ru/
+IRC-чат (на английском): http://webchat.freenode.net/?channels=%23selenium
+вообще-то это чат разработчиков Selenium, но туда можно приходить и задавать любые вопросы, чат очень дружелюбный
+
+	  
+					L2 Первые шаги: пробежимся по верхам
+		       m2 Инфраструктура для Java
+
+Проект с примером кода: https://github.com/barancev/selenium-training/tree/d2f90644976c711efe9f1f89762752c9801a8e7b/java-example
+Клиентская библиотека Selenium в центральном репозитории Maven: http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22selenium-java%22
+Selenium API JavaDoc: http://seleniumhq.github.io/selenium/docs/api/java/index.html
+barancev/webdriver-implicit-wait-wrapper : https://github.com/barancev/webdriver-implicit-wait-wrapper
+             
+				m3 Инфраструктура для C#
+
+Проект с примером кода: https://github.com/barancev/selenium-training/tree/d2f90644976c711efe9f1f89762752c9801a8e7b/java-example
+Клиентская библиотека Selenium в центральном репозитории Maven: http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22selenium-java%22
+Selenium API JavaDoc: http://seleniumhq.github.io/selenium/docs/api/java/index.html
+можно попробовать подавить это сообщение :
+https://www.raymond.cc/blog/disable-program-has-stopped-working-error-dialog-in-windows-server-2008/
+
+               m4 Инфраструктура для Python
+
+Проект с примером кода: https://github.com/barancev/selenium-training/tree/d2f90644976c711efe9f1f89762752c9801a8e7b/python-example
+Клиентская библиотека Selenium в репозитории PyPI: https://pypi.python.org/pypi/selenium
+Selenium Python API documentation: http://seleniumhq.github.io/selenium/docs/api/py/index.html
+Неофициальная (но весьма хорошая документация): http://selenium-python.readthedocs.io/
+
+				m5 Инфраструктура для Ruby
+		   
+Проект с примером кода: https://github.com/barancev/selenium-training/tree/d2f90644976c711efe9f1f89762752c9801a8e7b/ruby-example
+Клиентская библиотека Selenium в репозитории RubyGems: https://rubygems.org/gems/selenium-webdriver
+Selenium Ruby API documentation: http://seleniumhq.github.io/selenium/docs/api/rb/index.html
+
+			m6 Инфраструктура для JavaScript
+
+Проект с примером кода: https://github.com/barancev/selenium-training/tree/d2f90644976c711efe9f1f89762752c9801a8e7b/js-example
+Клиентская библиотека Selenium в репозитории NPM: https://www.npmjs.com/package/selenium-webdriver
+Selenium JS API documentation: http://seleniumhq.github.io/selenium/docs/api/javascript/index.html
+"чтобы использовать selenium и писать код на JS -- нужно научиться ловко обращаться с промисами. если с ними не удастся наладить дружбу -- лучше выбрать другой язык" A Barancev
+
+        Локальный веб-сервер
+
+Для выполнения домашних заданий нам потребуется учебное приложение, с которым вы можете делать любые эксперименты и никому не мешать. Чтобы выполнить это требование, нам потребуется локальный веб-сервер, на котором будет развёрнуто учебное приложение.
+Если у вас уже есть какой-нибудь веб-сервер, который представляет собой комбинацию Apache+MySQL+PHP -- можете использовать его.
+Если у вас нет локального веб-сервера -- установите XAMPP в соответствии с инструкцией: http://selenium2.ru/articles/136-installing-xampp.html
+Внимание: используйте версию сервера, которая включает PHP 5.6, потому что пока далеко не все веб-приложения совместимы с PHP 7
+Если Вы решили взять другой сервер, посмотрите информацию ниже, для некоторых серверов требуются дополнительные действия после установки учебного приложения.
+
+           Учебное приложение
+
+После того, как сервер готов, нужно установить учебное приложение. Мы будем использовать для этой цели веб-магазин litecart https://www.litecart.net/
+Вы можете попробовать установить его самостоятельно, а если не получится -- смотрите видео-инструкцию ниже.
+Если всё получилось -- можете самостоятельно отметить задание как выполненное -- перейти на главную страницу курса и поставить галочку напротив этого задания.
+Если возникли затруднения -- задавайте вопросы в скайп-чат.
+Инструкция по установке учебного приложения
+					Дополнительная информация про WAMP Server
+
+WAMP использует более новую версию базы данных, поэтому для обеспечения совместимости учебного приложения с ней нужно выполнить после установки дополнительные действия, внести небольшие модификации в структуру базы данных.
+
+1) открыть http://localhost/phpmyadmin/
+2) кликнуть слева нужную базу данных
+3) открыть вкладку SQL сверху над списком таблиц
+4) вставить туда такой код:
+
+ALTER TABLE `lc_translations` CHANGE `html` `html` TINYINT(1) NOT NULL DEFAULT '0';
+ALTER TABLE `lc_translations` CHANGE `date_accessed` `date_accessed` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP;
+и выполнить его
+
+								L3 Запуск браузеров
+Ссылки на файлы посредники для разных браузеров можно найти здесь: http://www.seleniumhq.org/download/
+для IE смотрите раздел "The Internet Explorer Driver Server"
+для других браузеров смотрите раздел "Third Party Drivers, Bindings, and Plugins"
+
+									Java
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+//...
+WebDriver chromeDriver = new ChromeDriver();
+WebDriver ieDriver = new InternetExplorerDriver();
+WebDriver firefoxDriver = new FirefoxDriver();
+
+							C#
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.IE;
+using OpenQA.Selenium.Firefox;
+//...
+IWebDriver chromeDriver = new ChromeDriver();
+IWebDriver ieDriver = new InternetExplorerDriver();
+IWebDriver firefoxDriver = new FirefoxDriver();
+
+											Python
+
+from selenium import webdriver
+chrome_driver = webdriver.Chrome()
+ie_driver = webdriver.Ie()
+firefox_driver = webdriver.Firefox()
+
+								Ruby
+require 'selenium-webdriver'
+chrome_driver = Selenium::WebDriver.for(:chrome)
+ie_driver = Selenium::WebDriver.for(:ie)
+firefox_driver = Selenium::WebDriver.for(:firefox)
+
+						JavaScript
+var webdriver = require('selenium-webdriver');
+chrome_driver = new webdriver.Builder().forBrowser('chrome').build();
+ie_driver = new webdriver.Builder().forBrowser('ie').build();
+firefox_driver = new webdriver.Builder().forBrowser('firefox').build();
+
+								L3_m2 Куда положить "прокладку"
+
+Ссылки на файлы посредники для разных браузеров можно найти здесь: http://www.seleniumhq.org/download/
+для IE смотрите раздел "The Internet Explorer Driver Server"
+для других браузеров смотрите раздел "Third Party Drivers, Bindings, and Plugins"
+
+														Примеры кода
+Примеры кода, в которых показано, как можно задавать пути к файлам-посредникам, намеренно отсутствуют, потому что это очень-очень плохая практика. Не делайте так! Помещайте исполняемые файлы-посредники в PATH, настраивайте правильно окружение.
+
+								Python x64 + Windows
+64-битная версия Python на платформе Windows вместо стандартной системной директории C:\windows\system32\ использует другую директорию -- C:\windows\SysWOW64\ , поэтому исполняемые файлы-посредники нужно класть именно туда (если, конечно, вы решили положить их в системную директорию).										
+
+
+									L3_m4 Список Capabilities
+
+https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities
+
+							Java
+import org.openqa.selenium.HasCapabilities;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.ie.InternetExplorerDriver;
+//...
+DesiredCapabilities caps = new DesiredCapabilities();
+caps.setCapability("unexpectedAlertBehaviour", "dismiss");
+WebDriver driver = new InternetExplorerDriver(caps);
+System.out.println(((HasCapabilities) driver).getCapabilities());
+
+											C#
+В отличие от других языков, в C# конструктор драйвера обычно принимает не объект типа ICapabilities, а более специализированный объект, содержащий набор опций драйвера, и для каждого драйвера он свой. Пример для Internet Explorer:
+
+using OpenQA.Selenium;
+using OpenQA.Selenium.IE;
+//...
+InternetExplorerOptions options = new InternetExplorerOptions();
+options.UnexpectedAlertBehavior = InternetExplorerUnexpectedAlertBehavior.Dismiss;
+IWebDriver driver = new InternetExplorerDriver(options);
+Это отличие от других языков можно считать "экспериментальным", есть вероятность, что в будущем реализации на других языках будут построены по такой же схеме. Вместе с тем, для некоторых драйверов, например, FirefoxDriver, доступны сразу оба варианта вызова конструктора -- можно передать туда либо объект типа FirefoxOptions, либо объект типа ICapabilities, там переход на новую "экспериментальную" схему инициализации ещё не завершился.
+
+									Python	
+from selenium import webdriver
+wd = webdriver.Ie(capabilities={"unexpectedAlertBehaviour": "dismiss"})
+print(wd.capabilities)
+							Ruby
+
+require 'selenium-webdriver'
+require 'pp'
+caps = Selenium::WebDriver::Remote::Capabilities.new('unexpectedAlertBehaviour': 'dismiss')
+@driver = Selenium::WebDriver.for :chrome, desired_capabilities: caps
+puts PP.pp(@driver.capabilities)
+									
+												JavaScript
+var webdriver = require('selenium-webdriver');
+var driver = new webdriver.Builder()
+    .withCapabilities({'unexpectedAlertBehaviour': 'dismiss'})
+    .forBrowser('chrome')
+    .build();
+driver.getCapabilities().then(function(caps) {
+  console.log(caps);
+});
+
+												L3_m5 Опции командной строки
+
+Опции командной строки Chrome: http://peter.sh/experiments/chromium-command-line-switches/
+Опции командной строки Firefox: https://developer.mozilla.org/en-US/docs/Mozilla/Command_Line_Options
+Опции командной строки Internet Explorer: https://msdn.microsoft.com/ru-ru/library/hh826025(v=vs.85).aspx
+Статья про активацию микрофона, которая упоминалась в лекции:
+http://www.testautomationguru.com/selenium-webdriver-google-voice-search-automation-using-arquillian-graphene/
+
+										L3_m6 Запуск Chrome
+Загрузить chromedriver: https://sites.google.com/a/chromium.org/chromedriver/downloads
+Capabilities & ChromeOptions: https://sites.google.com/a/chromium.org/chromedriver/capabilities
+
+											Java
+ChromeOptions options = new ChromeOptions();
+options.setBinary("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe");
+options.addArguments("start-maximized");
+WebDriver driver = new ChromeDriver(options);
+
+						C#
+ChromeOptions options = new ChromeOptions();
+options.BinaryLocation = @"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe";
+options.AddArgument("start-maximized");
+driver = new ChromeDriver(options);
+
+						Python
+options = ChromeOptions()
+options.binary_location = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
+options.add_argument("start-maximized")
+wd = webdriver.Chrome(chrome_options=options)
+
+						Ruby
+Selenium::WebDriver::Chrome.path = "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
+@driver = Selenium::WebDriver.for(:chrome, args: ["start-maximized"])
+
+					JavaScript
+var webdriver = require('selenium-webdriver'),
+    chrome = require('selenium-webdriver/chrome');
+var options = new chrome.Options();
+options.setChromeBinaryPath("C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe")
+options.addArguments(["start-maximized"]);
+driver = new webdriver.Builder()
+    .forBrowser('chrome')
+    .setChromeOptions(options)
+    .build();
+					
+					L3_m7 Запуск Internet Explorer
+Загрузить IEDriverServer: http://www.seleniumhq.org/download/
+смотрите раздел "The Internet Explorer Driver Server"
+Внимание: рекомендуется использовать 32-битную версию IEDriverServer, даже если у вас 64-битная операционная система!
+Capabilities: https://github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities#ie-specific
+
+				Java
+DesiredCapabilities caps = new DesiredCapabilities();
+caps.setCapability(InternetExplorerDriver.REQUIRE_WINDOW_FOCUS, true);
+WebDriver driver = new InternetExplorerDriver(caps);
+					
+					C#
+InternetExplorerOptions options = new InternetExplorerOptions();
+ options.RequireWindowFocus = true;
+ driver = new InternetExplorerDriver(options);
+
+					Python
+wd = webdriver.Ie(capabilities={"requireWindowFocus": True})
+
+						Ruby
+@driver = Selenium::WebDriver.for(:ie, desired_capabilities: {'requireWindowFocus'webdriver: true})webdriver
+					
+					JavaScript
+var webdriver = require('selenium-webdriver'),
+    ie = require('selenium-webdriver/ie');
+var options = new ie.Options();
+options.requireWindowFocus(true)
+driver = new webdriver.Builder()
+    .forBrowser('ie')
+    .setIeOptions(options)
+    .build();
+	
+									L3_m8 Запуск Firefox
+Загрузить geckodriver: https://github.com/mozilla/geckodriver/releases
+Текущий статус реализации функций Selenium в geckodriver: https://developer.mozilla.org/en-US/docs/Mozilla/QA/Marionette/WebDriver/status
+Описание настроек браузера:  http://kb.mozillazine.org/About:config_entries
+						
+						Запуск Firefox по новой и старой схеме
+							Java
+// новая схема:
+WebDriver driver = new FirefoxDriver();
+// новая схема более явно:
+DesiredCapabilities caps = new DesiredCapabilities();
+caps.setCapability(FirefoxDriver.MARIONETTE, true);
+WebDriver driver = new FirefoxDriver(caps);
+// старая схема:
+DesiredCapabilities caps = new DesiredCapabilities();
+caps.setCapability(FirefoxDriver.MARIONETTE, false);
+WebDriver driver = new FirefoxDriver(caps);
+
+							C# (обратите внимание на отличия от других языков)
+// новая схема:
+IWebDriver driver = new FirefoxDriver();
+// новая схема более явно:
+FirefoxOptions options = new FirefoxOptions();
+options.UseLegacyImplementation = false;
+driver = new FirefoxDriver(options);
+// старая схема:
+FirefoxOptions options = new FirefoxOptions();
+options.UseLegacyImplementation = true;
+driver = new FirefoxDriver(options);
+
+								Python
+# новая схема:
+from selenium import webdriver
+
+wd = webdriver.Firefox()
+# новая схема более явно:
+wd = webdriver.Firefox(capabilities={"marionette": True})
+# старая схема:
+wd = webdriver.Firefox(capabilities={"marionette": False})
+
+					Ruby (обратите внимание на отличия от других языков)
+# новая схема:
+require 'selenium-webdriver'
+@driver = Selenium::WebDriver.for :firefox
+# новая схема более явно:
+caps = Selenium::WebDriver::Remote::W3CCapabilities.new()
+@driver = Selenium::WebDriver.for(:firefox, :desired_capabilities => caps)
+# старая схема:
+caps = Selenium::WebDriver::Remote::Capabilities.new()
+@driver = Selenium::WebDriver.for(:firefox, :desired_capabilities => caps)
+
+							JavaScript
+# новая схема
+var webdriver = require('selenium-webdriver');
+var driver = new webdriver.Builder()
+    .withCapabilities({'marionette': true})
+    .forBrowser('firefox')
+    .build();
+# новая схема более явно:
+var driver = new webdriver.Builder()
+    .withCapabilities({'marionette': true})
+    .forBrowser('firefox')
+    .build();
+# старая схема:
+var driver = new webdriver.Builder()
+    .withCapabilities({'marionette': false})
+    .forBrowser('firefox')
+    .build();
+						
+							Указание пути к браузеру
+					Java
+FirefoxBinary bin = new FirefoxBinary(new File("c:\\Program Files (x86)\\Nightly\\firefox.exe"));
+WebDriver driver = new FirefoxDriver(bin, new FirefoxProfile());
+
+					C#
+Более старый способ (в будущем он скорее всего исчезнет):
+FirefoxBinary binary = new FirefoxBinary(@"c:\Program Files (x86)\Nightly\firefox.exe");
+IWebDriver driver = new FirefoxDriver(binary, new FirefoxProfile());
+
+Более новый способ:
+FirefoxOptions options = new FirefoxOptions();
+options.BrowserExecutableLocation = @"c:\Program Files (x86)\Nightly\firefox.exe";
+IWebDriver driver = new FirefoxDriver(options);
+
+					Python
+wd = webdriver.Firefox(firefox_binary="c:\\Program Files (x86)\\Nightly\\firefox.exe")
+
+					Ruby
+Selenium::WebDriver::Firefox::Binary.path = "c:\\Program Files (x86)\\Nightly\\firefox.exe"
+@driver = Selenium::WebDriver.for(:firefox)
+
+				JavaScript
+driver = new webdriver.Builder()
+    .withCapabilities({'firefox_binary': 'c:\\Program Files (x86)\\Nightly\\firefox.exe'})
+    .forBrowser('firefox')
+    .build();
+
+	
+												L3_m9Ненастоящие браузеры
+Драйвер для PhantomJS: https://github.com/detro/ghostdriver
+Драйвер для WebKit: https://github.com/MachinePublishers/jBrowserDriver/
+Headless automation for Internet Explorer: http://triflejs.org/
+Список headless-браузеров: https://github.com/dhamaniasad/HeadlessBrowsers
+Список headless-браузеров: https://gist.github.com/evandrix/3694955
+
+					L3_m10 Работа с cookies    https://ru.wikipedia.org/wiki/HTTP_cookie
+				
+					Java
+import org.openqa.selenium.Cookie;
+//...
+driver.manage().addCookie(new Cookie("test", "test"));
+Cookie testCookie = driver.manage().getCookieNamed("test");
+Set<Cookie> cookies = driver.manage().getCookies();
+driver.manage().deleteCookieNamed("test");
+driver.manage().deleteAllCookies();
+
+						C#
+driver.Manage().Cookies.AddCookie(new Cookie("test", "test"));
+Cookie testCookie = driver.Manage().Cookies.GetCookieNamed("test");
+ICollection<Cookie> cookies = driver.Manage().Cookies.AllCookies;
+driver.Manage().Cookies.DeleteCookieNamed("test");
+driver.Manage().Cookies.DeleteAllCookies();
+
+					Python
+driver.add_cookie({'name': 'test', 'test': 'bar'})
+test_cookie = driver.get_cookie('test')
+cookies = driver.get_cookies()
+driver.delete_cookie('test')
+driver.delete_all_cookies()
+
+					Ruby
+@driver.manage.add_cookie({name: 'test', test: 'bar'})
+test_cookie = @driver.manage.cookie_named('test')
+cookies = @driver.manage.all_cookies
+@driver.manage.delete_cookie('test')
+@driver.manage.delete_all_cookies
+
+				JavaScript
+driver.manage().addCookie({'name': "test", 'value':"test"});
+var testCookie = driver.manage().getCookie("test");
+var cookies = driver.manage().getCookies();
+driver.manage().deleteCookie("test");
+driver.manage().deleteAllCookies();
+
+							L3_m11  selenium3_l3_m11_multi.mp4 : pokazan python primer iz komamdnoi stroki
+
+							L3_m12 Несколько браузеров сразу Параллельный запуск
+Пример кода из лекции: https://github.com/barancev/selenium-training/blob/master/java-example/src/test/java/ru/stqa/training/selenium/TestBase.java
+WebDriverFactory: https://github.com/barancev/webdriver-factory
+
+					 L4_m2 Локаторы 
+								Java
+WebElement form1 = driver.findElement(By.id("login-form"));
+WebElement form2 = driver.findElement(By.tagName("form"));
+WebElement form3 = driver.findElement(By.className("login"));
+WebElement form4 = driver.findElement(By.cssSelector("form.login"));
+WebElement form5 = driver.findElement(By.cssSelector("#login-form"));
+
+WebElement field1 = driver.findElement(By.name("username"));
+WebElement field2 = driver.findElement(By.xpath("//input[@name='username']"));
+WebElement link = driver.findElement(By.linkText("Logout"));
+List<WebElement> links = driver.findElements(By.tagName("a"));
+
+										C#
+IWebElement form1 = driver.FindElement(By.Id("login-form"));
+IWebElement form2 = driver.FindElement(By.TagName("form"));
+IWebElement form3 = driver.FindElement(By.ClassName("login"));
+IWebElement form4 = driver.FindElement(By.CssSelector("form.login"));
+IWebElement form5 = driver.FindElement(By.CssSelector("#login-form"));
+
+IWebElement field1 = driver.FindElement(By.Name("username"));
+IWebElement field2 = driver.FindElement(By.XPath("//input[@name='username']"));
+IWebElement link = driver.FindElement(By.LinkText("Logout"));
+IList<IWebElement> links = driver.FindElements(By.TagName("a"));
+
+											Python
+form1 = driver.find_element_by_id("login-form")
+form2 = driver.find_element_by_tag_name("form")
+form3 = driver.find_element_by_class_name("login")
+form4 = driver.find_element_by_css_selector("form.login")
+form5 = driver.find_element_by_css_selector("#login-form")
+
+field1 = driver.find_element_by_name("username")
+field2 = driver.find_element_by_xpath("//input[@name='username']")
+link = driver.find_element_by_link_text("Logout")
+links = driver.find_elements_by_tag_name("a")
+
+											Ruby
+form1 = @driver.find_element(:id, "login-form")
+form2 = @driver.find_element(:tag_name, "form")
+form3 = @driver.find_element(:class_name, "login")
+form4 = @driver.find_element(:css_selector, "form.login")
+form5 = @driver.find_element(:css_selector, "#login-form")
+
+field1 = @driver.find_element(:name, "username")
+field2 = @driver.find_element(:xpath, "//input[@name='username']")
+link = @driver.find_element(:link_text, "Logout")
+links = @driver.find_elements(:tag_name, "a")
+
+							JavaScript
+var form1 = driver.findElement(By.id("login-form"));
+var form2 = driver.findElement(By.tagName("form"));
+var form3 = driver.findElement(By.className("login"));
+var form4 = driver.findElement(By.css("form.login"));
+var form5 = driver.findElement(By.css("#login-form"));
+
+var field1 = driver.findElement(By.name("username"));
+var field2 = driver.findElement(By.xpath("//input[@name='username']"));
+var link = driver.findElement(By.linkText("Logout"));
+var links = driver.findElements(By.tagName("a"));
+
+								L4_m3 CSS Selectors
+Спецификация CSS Selectors Level 2 -- https://www.w3.org/TR/CSS21/
+Спецификация CSS Selectors Level 3 -- https://www.w3.org/TR/css3-selectors/
+Информация о том, в каких версиях браузеров можно использовать CSS Selectors Level 3 -- http://caniuse.com/#feat=css-sel3
+										Шпаргалки по CSS:
+http://www.cheetyr.com/css-selectors
+http://www.w3schools.com/cssref/css_selectors.asp
+https://www.simple-talk.com/dotnet/.net-framework/xpath,-css,-dom-and-selenium-the-rosetta-stone/ (постер)
+https://www.smashingmagazine.com/2009/07/css-3-cheat-sheet-pdf/ (постер, последняя страница)
+https://w3c.github.io/webdriver/webdriver-spec.html#locator-strategies
+
+					L4_m4 XPath
+Спецификация XPath 1.0 -- https://www.w3.org/TR/xpath/
+													Шпаргалки по XPath:
+http://scraping.pro/5-best-xpath-cheat-sheets-and-quick-references/
+https://www.simple-talk.com/dotnet/net-framework/xpath-css-dom-and-selenium-the-rosetta-stone/ (постер)
+
+					L4_m5 Сравнение типов локаторов  http://software-testing.ru/lms/mod/lesson/view.php?id=38587&pageid=610
+iz	video: python comand promt, pokazana sravnenie skorostei css vs. xPath s komandoi %timeit
+	
+								L4_m7 Поиск нескольких элементов   est' primer udalennogo brauzera
+										Java
+boolean isElementPresent(WebDriver driver, By locator) {
+  try {
+    driver.findElement(locator);
+    return true;
+  } catch (NoSuchElementException ex) {
+    return false;
+  }
+}
+boolean areElementsPresent(WebDriver driver, By locator) {
+  return driver.findElements(locator).size() > 0;
+}
+					C#
+bool IsElementPresent(WebDriver driver, By locator) {
+  try {
+    driver.FindElement(locator);
+    return true;
+  } catch (NoSuchElementException ex) {
+    return false;
+  }
+}
+bool AreElementsPresent(WebDriver driver, By locator) {
+  return driver.FindElements(locator).Count > 0;
+}
+				
+				Python
+from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.common.by import By
+
+def is_element_present(driver, *args):
+  try:
+    driver.find_element(*args)
+    return True
+  except NoSuchElementException:
+    return False
+
+is_element_present(driver, By.name, "q")
+def are_elements_present(driver, *args):
+     return len(driver.find_elements(*args)) > 0
+
+are_elements_present(driver, By.name, "q")
+						
+						Ruby
+def element_present?(how, what)
+  begin
+    @driver.find_element(how, what)
+    return true
+  rescue Selenium::WebDriver::Error::NoSuchElementError
+    return false
+  end
+end
+def elements_present?(how, what)
+  return @driver.find_elements(how, what).size > 0
+end
+
+														JavaScript
+Писатели на JavaScript любят использовать promices, поэтому проверка наличия элемента будет выглядеть примерно так:
+driver.findElement(By.name('q')).then(function() {
+  // do something
+});
+или так
+driver.findElements(By.name('q')).then(function() {
+  // do something
+});
+
+						L4_m9 Ожидание появления элемента  
+							
+										Java
+// настройка неявных ожиданий
+driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+WebElement element = driver.findElement(By.name("q"));
+// явное ожидание появления элемента
+import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
+// ...
+WebdriverWait wait = new WebDriverWait(driver, 10/*seconds*/);
+WebElement element = wait.until(presenceOfElementLocated(By.name("q")));
+
+										C#
+// настройка неявных ожиданий
+driver.Manage().Timeouts().ImplicitlyWait(TimeSpan.FromSeconds(10));
+IWebElement element = driver.FindElement(By.Name("q"));
+// явное ожидание появления элемента
+WebdriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+IWebElement element = wait.Until(ExpectedConditions.ElementExists(By.Name("q")));
+
+										Python
+// настройка неявных ожиданий
+driver.implicitly_wait(10)
+element = driver.find_element_by_name("q")
+// явное ожидание появления элемента
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+
+wait = WebDriverWait(driver, 10) # seconds
+element = wait.until(EC.presence_of_element_located((By.NAME, "q"))
+# обратите внимание, что локатор передается как tuple!
+
+									Ruby
+// настройка неявных ожиданий
+@driver.manage.timeouts.implicit_wait = 10 # seconds
+element = @driver.find_element(:name => "q")
+// явное ожидание появления элемента
+wait = Selenium::WebDriver::Wait.new(:timeout => 10) # seconds
+element = wait.until { @driver.find_element(:name => "q") }
+
+										JavaScript
+// настройка неявных ожиданий
+driver.manage().timeouts().implicitlyWait(10000/*ms*/);
+var element = driver.findElement(By.name("q"));
+// явное ожидание появления элемента
+var element = driver.wait(until.elementLocated(By.name('q')), 10000/*ms*/);
+
+					L4_m11 Поиск при помощи JavaScript ,nemnogo pro Protractor i AngularJS
+				
+								Java
+List<WebElement> links = (List<WebElement>) ((JavascriptExecutor) driver)
+  .executeScript("return $$('a:contains((WebDriver)')");
+
+								C#
+IList<IWebElement> links = (IList<IWebElement>) ((IJavascriptExecutor) driver)
+  .ExecuteScript("return $$('a:contains((WebDriver)')");
+
+									Python
+links = driver.execute_script("return $$('a:contains((WebDriver)')")
+
+									Ruby
+links = @driver.execute_script("return $$('a:contains((WebDriver)')")
+
+						JavaScript
+var links = driver.executeScript("return $$('a:contains((WebDriver)')");
+
+												L5 Получение свойств элементов
+									L5_m1 Получение атрибутов элемента OBS! smotri tab Properties v Chrome. V lekcii video s pythonom
+Про свойства и атрибуты -- http://javascript.ru/tutorial/dom/attributes
+						Java
+String href = link.getAttribute("href");
+					C#
+string href = link.GetAttribute("href");
+				Python
+href = link.get_attribute("href")
+				Ruby
+href = link.attribute("href")
+				JavaScript
+var href = link.getAttribute("href");
+
+										L5_m2 Определение видимости элемента
+			
+				Правила определения видимости:
+https://w3c.github.io/webdriver/webdriver-spec.html#element-displayedness
+
+					Примеры невидимых элементов:
+https://output.jsbin.com/saqoca/2
+Doc:   http://www.seleniumhq.org/download/
+java: http://seleniumhq.github.io/selenium/docs/api/java/org/openqa/selenium/package-summary.html potom http://seleniumhq.github.io/selenium/docs/api/java/org/openqa/selenium/WebElement.html
+iwem metod isDisplayed
+
+								Java
+if (button.isDisplayed()) {
+  button.click();
+}
+								C#
+if (button.Displayed)
+{
+  button.Click();
+}
+								Python
+if button.is_displayed():
+  button.click()
+								Ruby
+if button.displayed?
+  buton.click()
+end
+								JavaScript
+button.isDisplayed().then(function() {
+  button.click();
+});
+
+								L5_m3  Получение текста элемента
+Правила получения текста -- https://w3c.github.io/webdriver/webdriver-spec.html#get-element-text
+				Java
+String txt = link.getText();
+				C#
+string txt = link.Text;
+				Python
+txt = link.text
+				Ruby
+txt = link.text
+				JavaScript
+var txt = link.getText();
+
+										L5_m4 Получение стилей элемента
+					Java
+String color = link.getCssValue("color");
+						C#
+string color = link.GetCssValue("color");
+				Python
+color = link.value_of_css_property("color")
+				Ruby
+color = link.css_value("color")
+# альтернативный способ
+color = link.style("color")
+			JavaScript
+var color = link.getCssValue("color");
+
+								L5_m5 Размер и положение элемента
+				Про свойства и атрибуты -- http://javascript.ru/tutorial/dom/attributes
+				Java
+Point location = link.getLocation();
+Dimension size = link.getSize();
+// "два в одном" -- новый способ, который пока не все драйверы поддерживают
+Rectangle rect = link.getRect();
+
+						C#
+Point location = link.Location;
+Size size = link.Size;
+
+				Python
+location = link.location
+size = link.size
+
+				Ruby
+location = link.location
+size = link.size
+				JavaScript
+var location = link.getLocation();
+var size = link.getSize();
+
+								L6 Действия с элементами http://software-testing.ru/lms/mod/lesson/view.php?id=38593
+									m1 Клик левой кнопкой мыши (click)
+								Java
+link.click();
+							C#
+link.Click();
+							Python
+link.click()
+							Ruby
+link.click
+						JavaScript
+link.click();
+							L6_m2 Ввод текста (sendKeys)
+					Java
+import org.openqa.selenium.Keys;
+//...
+searchField.sendKeys("selenium" + Keys.ENTER);
+
+// если в поле есть маска -- надо перед вводом текста перейти в начало
+dateField.sendKeys(Keys.HOME + "01.01.2001");
+						
+						C#
+searchField.SendKeys("selenium" + Keys.Enter);
+// если в поле есть маска -- надо перед вводом текста перейти в начало
+dateField.SendKeys(Keys.Home + "01.01.2001");
+
+						Python
+from selenium.webdriver.common.keys import Keys
+search_field.send_keys("selenium" + Keys.ENTER)
+# если в поле есть маска -- надо перед вводом текста перейти в начало
+date_field.send_keys(Keys.HOME + "01.01.2001")
+
+							Ruby
+search_field.send_keys("selenum", :enter)
+# если в поле есть маска -- надо перед вводом текста перейти в начало
+date_field.sendKeys(:home, "01.01.2001")
+
+						JavaScript
+var webdriver = require('selenium-webdriver'),
+    Key = webdriver.Key;
+//...
+searchField.sendKeys("selenium" + Key.ENTER);
+// если в поле есть маска -- надо перед вводом текста перейти в начало
+dateField.sendKeys(Keys.HOME + "01.01.2001");
+
+													m3 Очистка поля ввода (clear)
+iz video    https://www.w3.org/TR/webdriver/#element-clear
+Предупреждение Нельзя использовать команду clear для очистки файловых полей ввода!
+					Java
+passwordField.clear();
+			C#
+passwordField.Clear();
+			Python
+password_field.clear()
+			Ruby
+password_field.clear
+		JavaScript
+passwordField.clear();
+
+							m4 Advanced Interactions API 
+iz video primer s python : http://jqueryui.com/resources/demos/sortable/connect-lists.html
+							
+Java: http://seleniumhq.github.io/selenium/docs/api/java/org/openqa/selenium/interactions/Actions.html
+C#: http://seleniumhq.github.io/selenium/docs/api/dotnet/html/T_OpenQA_Selenium_Interactions_Actions.htm
+Python: http://seleniumhq.github.io/selenium/docs/api/py/webdriver/selenium.webdriver.common.action_chains.html#selenium.webdriver.common.action_chains.ActionChains
+Ruby: http://seleniumhq.github.io/selenium/docs/api/rb/Selenium/WebDriver/ActionBuilder.html
+JavaScript: http://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/index_exports_ActionSequence.html
+
+									Java
+import org.openqa.selenium.interactions.Actions;
+//...
+new Actions(driver)
+    .moveToElement(drag)
+    .clickAndHold()
+    .moveToElement(drop)
+    .release()
+    .perform();
+							C#
+new Actions(driver)
+    .MoveToElement(drag)
+    .ClickAndHold()
+    .MoveToElement(drop)
+    .Release()
+    .Perform();
+							Python
+from selenium.webdriver.common.action_chains import ActionChains
+ActionChains(driver).move_to_element(drag).click_and_hold().move_to_element(drop).release().perform()
+						
+						Ruby
+@driver.action.move_to_element(drag).click_and_hold().move_to_element(drop).release().perform
+
+								JavaScript
+driver.actions()
+    .moveToElement(drag)
+    .clickAndHold()
+    .moveToElement(drop)
+    .release()
+    .perform();
+	
+							m5 Работа со сложными элементами
+iz video: http://jqueryui.com/datepicker/   http://jqueryui.com/slider/    http://jqueryui.com/menu/
+Пример работы с "календариком" -- http://barancev.github.io/how-to-set-datepicker-value/
+Игорь Хрол, "Повышаем надёжность Selenium-тестов через JavaScript" -- http://selenium2.ru/articles/163-selenium-javascript.html
+
+						m6 Работа с невидимыми элементами
+iz video(python): http://cssglobe.com/lab/style_select/01.html
+Как прицепить файл к невидимому полю ввода -- http://barancev.github.io/how-to-attach-file-to-invisible-field/
+
+						L7 Ожидания (WebDriverWait)   m1 Ожидание появления элемента http://software-testing.ru/lms/mod/lesson/view.php?id=38596&pageid=628
+						Java
+import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
+// ...
+WebDriverWait wait = new WebDriverWait(driver, 10/*seconds*/);
+WebElement element = wait.until(presenceOfElementLocated(By.name("q")));
+WebElement element2 = wait.until((WebDriver d) -> d.findElement(By.name("q")));
+
+						C#
+WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+IWebElement element = wait.Until(ExpectedConditions.ElementExists(By.Name("q")));
+IWebElement element2 = wait.Until(d => d.FindElement(By.Name("q")));
+
+							Python
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+
+wait = WebDriverWait(driver, 10) # seconds
+# обратите внимание, что локатор передается как tuple!
+element = wait.until(EC.presence_of_element_located((By.NAME, "q")))
+element2 = wait.until(lambda d: d.find_element_by_name("q"))
+
+							Ruby
+wait = Selenium::WebDriver::Wait.new(:timeout => 10) # seconds
+element = wait.until { @driver.find_element(:name => "q") }
+
+								JavaScript
+// wait в качестве условия может принимать промис, объект типа Condition или просто функцию, возвращает промис
+driver.wait(until.elementLocated(By.name('q')), 10000/*ms*/).then(function(element) {...});
+
+						L7_m3 Ожидание исчезновения элемента
+					Java
+import static org.openqa.selenium.support.ui.ExpectedConditions.stalenessOf;
+// ...
+WebDriverWait wait = new WebDriverWait(driver, 10/*seconds*/);
+driver.navigate().refresh();
+wait.until(stalenessOf(element));
+
+					C#
+WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+driver.Navigate().Refresh();
+wait.Until(ExpectedConditions.StalenessOf(element));
+
+					Python
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+
+wait = WebDriverWait(driver, 10) # seconds
+driver.refresh()
+wait.until(EC.staleness_of(element))
+
+						Ruby
+def staleness_of(element)
+ element.enabled?
+ false
+rescue Selenium::WebDriver::Error::ObsoleteElementError
+ true
+end
+wait = Selenium::WebDriver::Wait.new(:timeout => 10) # seconds
+driver.navigate.refresh
+@wait.until { staleness_of(element) }
+
+					JavaScript
+driver.navigate().refresh().then(function(){
+    driver.wait(until.stalenessOf(element), 10000/*ms*/);
+});
+
+						L7_m4 Ожидание видимости элемента
+						Java
+import static org.openqa.selenium.support.ui.ExpectedConditions.visibilityOf;
+// ...
+WebDriverWait wait = new WebDriverWait(driver, 10/*seconds*/);
+wait.until(visibilityOf(element));
+
+							C#
+WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+wait.Until(ExpectedConditions.ElementIsVisible(element));
+
+							Python
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+wait = WebDriverWait(driver, 10) # seconds
+wait.until(EC.visibility_of(element))
+
+							Ruby
+wait = Selenium::WebDriver::Wait.new(:timeout => 10) # seconds
+@wait.until { element.displayed? }
+
+						JavaScript
+driver.wait(until.visibilityOf(element), 10000/*ms*/).then(function(element){...});
+
+							L7_m5 Другие условия ожидания
+Java -- http://seleniumhq.github.io/selenium/docs/api/java/org/openqa/selenium/support/ui/ExpectedConditions.html
+C# -- http://seleniumhq.github.io/selenium/docs/api/dotnet/html/T_OpenQA_Selenium_Support_UI_ExpectedConditions.htm
+Python -- http://seleniumhq.github.io/selenium/docs/api/py/webdriver_support/selenium.webdriver.support.expected_conditions.html
+JavaScript -- http://seleniumhq.github.io/selenium/docs/api/javascript/module/selenium-webdriver/lib/until.html							
+
+							L7_m6 Ожидание загрузки страницы
+Что означает "окончание загрузки страницы"? -- http://barancev.github.io/page-loading-complete/
+Как Selenium ожидает окончания загрузки страницы? -- http://barancev.github.io/how-selenium-waits-for-page-to-load/
+Что делать, если страница загружается слишком долго? -- http://barancev.github.io/slow-loading-pages/							
+
+								L7_m7 Особые ситуации
+StaleTolerantWebDriver (Java) -- https://github.com/barancev/decorated-webdriver/tree/master/src/main/java/ru/stqa/selenium/decorated/stale
+Repeatable Actions (Java) -- https://github.com/barancev/webdriver-repeatable-actions
+								
+								L8 Окна, фреймы и диалоги  
+								m1 Alert http://software-testing.ru/lms/mod/lesson/view.php?id=38598&pageid=635
+iz video: http://jsbin.com/cicenovile/   http://vodkabears.github.io/remodal/   http://dimsemenov.com/plugins/magnific-popup/  (link "Modal popup")
+								Java
+Alert alert = driver.switchTo().alert();
+String alertText = alert.getText();
+alert.accept();
+// либо alert.dismiss();
+
+										C#
+IAlert alert = driver.SwitchTo().Alert();
+string alertText = alert.Text;
+alert.Accept();
+// либо alert.Dismiss();
+
+									Python
+alert = driver.switch_to_alert()
+alert_text = alert.text
+alert.accept()
+# либо alert.dismiss()
+
+										Ruby
+alert = @driver.switch_to.alert
+alert_text = alert.text
+alert.accept
+# либо alert.dismiss
+
+										JavaScript
+driver.switchTo().alert().then(function(alrt) {
+    var alertText = alrt.getText();
+    alrt.accept();
+    alertText.then(function(text){ /*console.log(text)*/ });
+});
+
+									L8_m2 Загрузка файлов на сервер
+Как прицепить файл к невидимому полю ввода -- http://barancev.github.io/how-to-attach-file-to-invisible-field/
+
+									L8_m3 Окна (Tuda i obratno)
+									Java
+pro ExpectedConditions https://seleniumhq.github.io/selenium/docs/api/java/org/openqa/selenium/support/ui/ExpectedConditions.html
+
+String mainWindow = driver.getWindowHandle();
+Set<String> oldWindows = driver.getWindowHandles();
+link.click(); // открывает новое окно
+// ожидание появления нового окна, идентификатор которого отсутствует в списке oldWindows, остаётся в качестве самостоятельного упражнения
+String newWindow = wait.until(thereIsWindowOtherThan(oldWindows));
+driver.switchTo().window(newWindow);
+// ...
+driver.close();
+driver.switchTo().window(mainWindow);
+
+								C#
+string mainWindow = driver.CurrentWindowHandle;
+ICollection<string> oldWindows = driver.WindowHandles;
+link.Click(); // открывает новое окно
+// ожидание появления нового окна, идентификатор которого отсутствует в списке oldWindows, остаётся в качестве самостоятельного упражнения
+string newWindow = wait.Until(ThereIsWindowOtherThan(oldWindows));
+driver.SwitchTo().Window(newWindow);
+// ...
+driver.Close();
+driver.SwitchTo().Window(mainWindow);
+
+									Python
+main_window = driver.current_window_handle
+old_windows = driver.window_handles
+link.click() # открывает новое окно
+# ожидание появления нового окна, идентификатор которого отсутствует в списке oldWindows, остаётся в качестве самостоятельного упражнения
+new_window = wait.until(there_is_window_other_than(old_windows))
+driver.switch_to_window(new_window)
+# ...
+driver.close()
+driver.switch_to_window(main_window)
+						
+						Ruby
+main_window = @driver.window_handle
+old_windows = @driver.window_handles
+link.click # открывает новое окно
+# ожидание появления нового окна, идентификатор которого отсутствует в списке oldWindows, остаётся в качестве самостоятельного упражнения
+new_window = wait.until { there_is_window_other_than(old_windows) }
+driver.switch_to.window(new_window)
+# ...
+driver.close
+driver.switch_to.window(main_window)
+
+							JavaScript
+временно отсутствует :(									
+
+								L8_m4 Фреймы
+iz video: http://jsbin.com/kitaqaf/edit?html,output  								
+							Java
+driver.switchTo().frame(driver.findElement(By.tagName("iframe")));
+driver.switchTo().defaultContent();
+
+						C#
+driver.SwitchTo().Frame(driver.FindElement(By.TagName("iframe")));
+driver.SwitchTo().DefaultContent();
+
+						Python
+driver.switch_to_frame(driver.find_element_by_tag_name("iframe"))
+driver.switch_to_default_content()
+
+						Ruby
+@driver.switch_to.frame(@driver.find_element(:tag_name, "iframe"))
+@driver.switch_to.default_content
+
+						JavaScript
+driver.switchTo().frame(driver.findElement(By.tagName("iframe")));
+driver.switchTo().defaultContent();							
+
+							L8_m5 Размер и положение окна
+							Java
+WebDriver.Window window = driver.manage().window();
+window.maximize();
+window.setSize(new Dimension(800, 600));
+
+					C#
+IWindow window = driver.Manage().Window;
+window.Size = new System.Drawing.Size(800, 600);
+window.Maximize();
+
+					Python
+driver.set_window_size(800, 600)
+driver.maximize_window()
+
+				Ruby
+window = @driver.manage.window
+window.size = Selenium::WebDriver::Dimension.new(800, 600)
+window.maximize
+
+				JavaScript
+var wnd = driver.manage().window();
+wnd.setSize(800, 600);
+wnd.maximize();						
+
+							L8_m6 Команды close и quit  
+iz video: http://systemexplorer.net/ 
+							
+							L8_m7 Загрузка файлов с сервера 
+How To Download Files With Selenium And Why You Shouldn’t -- http://ardesco.lazerycode.com/index.php/2012/07/how-to-download-files-with-selenium-and-why-you-shouldnt/
+
+							L9 Удалённый запуск  http://software-testing.ru/lms/mod/lesson/view.php?id=38600&pageid=642
+								m1 Selenium Server						
+iz video: www.github.com/SeleniumHQ/selenium/wiki/DesiredCapabilities
+Можно использовать любую систему виртуализации, но если у вас нет предпочтений -- берите https://www.virtualbox.org/  Devices->Shared Clipboard(dlq copy-paste host<->guest)
+Готовые образы Windows для разных систем виртуализации можно найти здесь: https://developer.microsoft.com/en-us/microsoft-edge/tools/vms/  
+										Ubuntu: http://xubuntu.org/ 
+Na virt. mawine ustanovit' Selenium Standalone Server iz www.seleniumhq.org/download , java, chromedriver for Linux, geckodriver,
+chrome dlq linux( sudo dpkg -i google-chrome*.deb ) zapusk: google-chrome-stable smotret' ip: ifconfig(linux), ipconfig(windows) 
+4tobo uvidet' Shared papku v xubuntu nado ustanovit' GuestAdditions potom zapustit' >sudo usermod -aG vboxsf $(whoami) i restartnut' guest.
+V /media/sf_shared  uvidite soderzhimoe shared papki hosta
+						Java
+WebDriver driver = new RemoteWebDriver(new URL("http://localhost:4444/wd/hub"), DesiredCapabilities.chrome());
+						C#
+IWebDriver driver = new RemoteWebDriver(new Uri("http://localhost:4444/wd/hub"), DesiredCapabilities.Chrome());
+						Python
+driver = webdriver.Remote("http://localhost:4444/wd/hub", desired_capabilities={"browserName": "chrome"})
+							Ruby
+@driver = Selenium::WebDriver.for :remote, :url => "http://localhost:4444/wd/hub", :desired_capabilities => :chrome
+							JavaScript
+var driver = new webdriver.Builder()
+    .usingServer("http://localhost:4444/wd/hub")
+    .withCapabilities({ browserName: 'firefox' })
+    .build();
+
+								L9_m2 Selenium Grid
+								
+iz video: hub server : >java -jar selenium-server-standalone-3.1.0.jar -role hub  Konsol':  http://localhost:4444/grid/console
+na nodah(odin nod mojno zapustit' na habe) >java -jar selenium-server-standalone-3.1.0.jar -role node -hub http://192.168.56.1:4444/wd/hub 
+or >java -jar selenium-server-standalone-3.1.0.jar -role node -hub http://192.168.56.1:4444/grid/register 
+ubiraem vozmojnost' zapuska IE dlq Linux(proverka v konsoli): >java -jar selenium-server-standalone-3.1.0.jar -role node -hub http://192.168.56.1:4444/wd/hub -capabilities browserName=firefox,maxInstances=5 -capabilities browserName=chrome,maxInstances=5
+
+
+Более старая документация, более подробная, но может содержать неактуальную информацию:
+https://github.com/SeleniumHQ/selenium/wiki/Grid2
+Более новая документация, пока не очень подробная, но зато должна быть актуальная:
+https://seleniumhq.github.io/docs/grid.html#selenium_grid
+
+								m3 Selenium Grid Extras
+https://github.com/groupon/Selenium-Grid-Extras								
+								m4 Selenium в контейнере 
+https://github.com/SeleniumHQ/docker-selenium
+								m5 Selenium в облаках
+https://saucelabs.com/
+https://www.browserstack.com/
+https://testingbot.com/
+https://www.gridlastic.com/								
+
+									L10 Протоколирование действий Selenium http://software-testing.ru/lms/mod/lesson/view.php?id=38603
+									m1 EventFiringWebDriver: C#
+EventFiringWebDriver driver = new EventFiringWebDriver(new ChromeDriver());
+driver.FindingElement += (sender, e) => Console.WriteLine(e.FindMethod);
+driver.FindElementCompleted += (sender, e) => Console.WriteLine(e.FindMethod + " found");
+driver.ExceptionThrown += (sender, e) => Console.WriteLine(e.ThrownException);
+
+								m2 	EventFiringWebDriver: Python								
+from selenium.webdriver.support.events import EventFiringWebDriver, AbstractEventListener
+class MyListener(AbstractEventListener):
+    def before_find(self, by, value, driver):
+        print(by, value)
+    def after_find(self, by, value, driver):
+        print(by, value, "found")
+    def on_exception(self, exception, driver):
+        print(exception)
+wd = EventFiringWebDriver(webdriver.Chrome(), MyListener())
+
+									m3	EventFiringWebDriver: Ruby					
+require 'logger'
+class MyListener < Selenium::WebDriver::Support::AbstractEventListener
+  def initialize(log)
+    @log = log
+  end
+
+  def before_find(by, what, driver)
+    @log.info "#{by} #{what}"
+  end
+
+  def after_find(by, what, driver)
+    @log.info "#{by} #{what} found"
+  end
+end
+@driver = Selenium::WebDriver.for(:chrome, :listener => MyListener.new(Logger.new(STDOUT)))
+
+											m4 EventFiringWebDriver: Java
+public static class MyListener extends AbstractWebDriverEventListener {
+    @Override
+    public void beforeFindBy(By by, WebElement element, WebDriver driver) {
+        System.out.println(by);
+    }
+
+    @Override
+    public void afterFindBy(By by, WebElement element, WebDriver driver) {
+        System.out.println(by +  " found");
+    }
+
+    @Override
+    public void onException(Throwable throwable, WebDriver driver) {
+        System.out.println(throwable);
+    }
+}
+driver = new EventFiringWebDriver(new ChromeDriver());	
+
+											m5 Снятие скриншотов
+Видеорекордер (Java): https://github.com/SergeyPirogov/video-recorder-java
+
+											Java
+File tempFile = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+try {
+  Files.copy(tempFile, new File("screen.png"));
+} catch (IOException e) {
+  e.printStackTrace();
+}
+
+									C#
+driver.GetScreenshot().SaveAsFile("screen.png", ImageFormat.Png);
+
+									Python
+driver.get_screenshot_as_file('screen.png')
+
+										Ruby
+@driverdriver.save_screenshot('screen.png')
+
+									JavaScript
+var fs = require('fs');
+driver.takeScreenshot().then(
+    function(image) {
+        fs.writeFile('screen.png', image, 'base64', function(err) {
+            console.log(err);
+        });
+    }
+);
+	
+									m6 Доступ к логам браузера
+iz video: 	https://sites.google.com/a/chromium.org/chromedriver/logging/performance-log   :
+DesiredCapabilities cap = DesiredCapabilities.chrome();
+LoggingPreferences logPrefs = new LoggingPreferences();
+logPrefs.enable(LogType.PERFORMANCE, Level.ALL);
+cap.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
+									Java
+for (LogEntry l : driver.manage().logs().get("browser").getAll()) {
+    System.out.println(l);
+}
+							C#
+foreach (LogEntry l in driver.Manage().Logs.GetLog("browser"))
+{
+    Console.WriteLine(l);
+}
+									Python
+for l in driver.get_log("browser"):
+    print(l)
+										Ruby
+@driver.manage.logs.get("browser").each do |l|
+  puts l
+end
+									JavaScript
+driver.manage().logs().get("browser").then(function(logsEntries) {
+    logsEntries.forEach(function(l) {
+        console.log(l)
+    });
+});								
+								m7 Перехват трафика
+								Java
+Proxy proxy = new Proxy();
+proxy.setHttpProxy("localhost:8888");
+DesiredCapabilities caps = new DesiredCapabilities();
+caps.setCapability("proxy", proxy);
+WebDriver driver = new ChromeDriver(caps);
+
+								C#
+Proxy proxy = new Proxy();
+proxy.Kind = ProxyKind.Manual;
+proxy.HttpProxy = "localhost:8888";
+ChromeOptions options = new ChromeOptions();
+chromeOptions.Proxy = proxy;
+IWebDriver driver = new ChromeDriver(options);
+
+												Python
+driver = webdriver.Chrome(desired_capabilities={"proxy": {"proxyType": "MANUAL", "httpProxy": "localhost:8888"}})
+						
+						Ruby
+p = Selenium::WebDriver::Proxy.new(:http => "localhost:8888")
+caps = Selenium::WebDriver::Remote::Capabilities.new(:proxy => p)
+@driver = Selenium::WebDriver.for :chrome, desired_capabilities: caps
+JavaScript
+
+var webdriver = require('selenium-webdriver'),
+    proxy = require('selenium-webdriver/proxy');
+
+var driver = new webdriver.Builder()
+    .withCapabilities(webdriver.Capabilities.chrome())
+    .setProxy(proxy.manual({http: 'localhost:8888'}))
+    .build();
+
+									Ссылки
+BrowserMobProxy (Java):
+https://github.com/lightbody/browsermob-proxy   https://github.com/lightbody/browsermob-proxy#using-with-selenium
+
+BrowserMobProxy, обёртка для C#:
+https://github.com/AutomatedTester/AutomatedTester.BrowserMob
+Пример использования:
+http://automatedtester.science/load-testing-with-selenium-and-browsermob-proxy/
+Ещё одна обёртка для C#:
+https://github.com/tmulkern/RemoteBrowserMobProxy
+
+BrowserMobProxy, обёртка для Python:
+https://github.com/AutomatedTester/browsermob-proxy-py
+
+BrowserMobProxy, обёртка для Ruby:
+https://github.com/jarib/browsermob-proxy-rb
+
+BrowserMobProxy, обёртка для JavaScript:
+https://github.com/zzo/browsermob-node
+
+Что можно делать при помощи прокси:
+http://selenium2.ru/articles/106-selenium-i-browsermobproxy-vmeste-veselee.html
+
+Titanium: встраиваемый прокси на .Net:
+https://github.com/justcoding121/Titanium-Web-Proxy
+
+FiddlerCore: встраиваемый прокси на .Net:
+http://www.telerik.com/fiddler/fiddlercore
+
+mitmproxy: встраиваемый прокси на Python:
+https://mitmproxy.org/
+
+											Задание 18.Перенаправьте трафик в прокси-сервер
+Установите какой-нибудь прокси-сервер, который умеет протоколировать запросы и ответы.
+На выбор прокси-сервера для разных платформ:
+http://www.telerik.com/fiddler (Windows)
+https://www.charlesproxy.com/ (Windows, Linux, MacOS, платный, но есть пробная версия)
+https://mitmproxy.org/ (Linux, MacOS)
+https://www.owasp.org/index.php/OWASP_Zed_Attack_Proxy_Project (Windows, LInux, MacOS)
+Инициализируйте драйвер так, чтобы запросы из браузера отправлялись через этот прокси-сервер, убедитесь, что они там видны.
+
+										L11 PageObjects и другие шаблоны проектирования
+										m1 Page Objects в теории
+Краткое, но достаточно полное описание сути этого шаблона проектирования:
+http://martinfowler.com/bliki/PageObject.html
+Сайт книги "xUnit Test Patterns":
+http://xunitpatterns.com/										
+
+								m2 Page Objects на практике
+Этот модуль, пожалуй, самый большой и самый сложный в курсе. Но я счёл неразумным разбивать его на несколько более мелких модулей. Поэтому приготовьтесь к тому, что лекцию придётся смотреть по частям, иногда ставить на паузу и рассматривать программный код, ссылка на который находится внизу под видеороликом.
+Примеры кода: https://github.com/barancev/selenium-training-po
+Помимо Java-кода, продемонстрированного в лекции, там есть также аналогичный код на C#, Python, Ruby и JavaScript.								
+
+									L12 Расширения Selenium
+									m1 Драйверы
+iz video: https://github.com/2gis/Winium.Desktop/releases 
+
+									m3 Адаптеры
+iz video: 	robotframework.org/#examples								

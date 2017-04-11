@@ -26,6 +26,9 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 
+import static org.openqa.selenium.Platform.LINUX;
+import static org.openqa.selenium.Platform.WIN10;
+import static org.openqa.selenium.Platform.WINDOWS;
 import static org.openqa.selenium.support.ui.ExpectedConditions.titleIs;
 
 /**
@@ -133,6 +136,8 @@ public class TestBase {
     }
     //L10_m6 Eti 4 stroki iz https://sites.google.com/a/chromium.org/chromedriver/logging/performance-log
     DesiredCapabilities cap = DesiredCapabilities.chrome(); //Eti capabilities cap peredaem v ka4estve parametra v wd, sm nije
+    //cap.setPlatform(LINUX);
+    cap.setPlatform(WINDOWS);
     LoggingPreferences logPrefs = new LoggingPreferences();
     logPrefs.enable(LogType.PERFORMANCE, Level.ALL);
     cap.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
@@ -140,9 +145,10 @@ public class TestBase {
     url= "http://" + Inet4Address.getLocalHost().getHostAddress(); //L9_m1 : 4tobi zapuskat' udalenno server iz guest sistemi. Ne vsegda daet vnewnii ip sm: ifconfig v linux, ipconfig v Windows.
     System.out.println(url);
     //wd = new ChromeDriver(); //FirefoxDriver(); //ChromeDriver() //InternetExplorerDriver()
-    wd= new EventFiringWebDriver(new ChromeDriver(cap)); //L10_m4 obora4ivaem dlq protokolirovaniq. Obertivaem, menqem tip wd sm.viwe
+    //wd= new EventFiringWebDriver(new ChromeDriver(cap)); //L10_m4 obora4ivaem dlq protokolirovaniq. Obertivaem, menqem tip wd sm.viwe
     //wd = new RemoteWebDriver(new URL("http://10.40.190.232:4444/wd/hub"), DesiredCapabilities.chrome()); //L9_m1
-    //wd = new EventFiringWebDriver (new RemoteWebDriver(new URL("http://10.0.2.15:4444/wd/hub"), DesiredCapabilities.chrome()));//Obora4ivaem v EventFiringWebDriver
+    //wd = new EventFiringWebDriver (new RemoteWebDriver(new URL("http://192.168.56.1:4444/wd/hub"), DesiredCapabilities.chrome() ));//Obora4ivaem v EventFiringWebDriver
+    wd = new EventFiringWebDriver(new RemoteWebDriver (new URL("http://192.168.56.1:4444/wd/hub"), DesiredCapabilities.chrome()));
     //wd.register(new MyListener()); //L10_m4 dobavlqem lisener
     tlDriver.set(wd);
     wd.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS); //l4_m9 Ожидание появления элемента. 5 sekund na ozhidanie elementa. Esli ne naidet, yo isklu4enie NoSuchElementException. Mehanizm neqvnih ozhidanii
